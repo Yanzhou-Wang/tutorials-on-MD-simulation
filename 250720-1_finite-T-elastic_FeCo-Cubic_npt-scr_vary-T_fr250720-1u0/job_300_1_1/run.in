@@ -1,0 +1,50 @@
+potential  /home/wangy43/codes_inst_loca/nep_pote_lib/SongKK-FeCoWRe250720_nep/SongKK-FeCoWRe250720_nep.txt
+
+velocity    300    
+
+ensemble    npt_scr 300 300 100 0 0 0 0 0 0 100 100 100 100 100 100 1000
+time_step   1
+dump_thermo  100
+dump_exyz       100000 1 1 1         
+run       1000000
+
+ensemble    npt_scr 300 300 100 0 0 0 0 0 0 100 100 100 100 100 100 1000
+time_step   1
+dump_thermo  100
+dump_exyz       100000 1 1 1         
+run       1000000
+
+
+
+
+
+#--- candidate ensembles -----
+#ensemble         nvt_bdp/nhc/ber 300 300 100
+#ensemble         npt_scr/ber 400 400 100 0 0 0 1000 1000 10 1000
+
+
+#---- HENMD calc ------------
+#ensemble        nvt_nhc 300 300 100
+#time_step       1
+#dump_thermo     1000
+#run             200000
+
+#ensemble        nvt_nhc 300 300 100
+#time_step       1
+#dump_thermo     1000
+#compute_hnemd   1000 0 0 0.0002
+#compute_shc     4 250 2 1000 400
+#dump_restart    3000000
+#run             3000000
+
+
+#--- PDOS NPC1.5 ----
+#PS: of course you can do PDOS calc in other ensembles
+#ensemble        nve 
+#time_step       1
+#run             50000
+#ensemble        nve
+#time_step       1
+#dump_thermo     1000
+#compute_dos     5 500 400 num_dos_points 2000   # 1/(2*5 fs)=f=100THz, 2pi*f must be greater than the max of frequecy you set. i.e. 100*2pi>400
+#run             500000
