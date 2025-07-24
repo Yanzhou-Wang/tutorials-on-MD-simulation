@@ -1,0 +1,13 @@
+type          1 Al # this is a mandatory keyword
+version       4       # default nep version
+cutoff        4 3     # default two body  three body radius 
+n_max         4 4     # default 
+basis_size    6 6    # default
+#l_max        4 2 0   # default
+neuron        30      # default
+lambda_e      1.0     # default
+lambda_f      1.0     # default
+lambda_v      0.1     # default
+batch         1000    # default
+population    50      # default
+generation    1000  # default
