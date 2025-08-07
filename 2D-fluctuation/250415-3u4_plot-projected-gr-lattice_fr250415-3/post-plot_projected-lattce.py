@@ -8,8 +8,25 @@ is_list = [100, 400, 700, 1000, 1300, 1600, 1900, 2300, 2700, 3100, 3500]
 js_list = [25200]
 ks_list = [1, 2, 3, 4, 5, 6]
 
+replicates_along_zigzag = 105  # for 25200 atoms
+
+n_frames_dumpxyz = 500
+sample_interval = 10
+sample_start_index = 0
+
+selected_temps = [400, 1000, 1600, 2300, 3500]  # for histgram
+
+color_map = {
+    400: "tab:blue",
+    1000: "tab:orange",
+    1600: "tab:green",
+    2300: "tab:red",
+    3500: "tab:purple"
+}
+
+
 job_root = "../250415-3_graphene-lattice-vs-T_npt-scr_25200atom_denser-traj_6cycles_fr241013-1u"
-output_dir = "result-figures_projected-lattice-vs-T"
+output_dir = "./"
 os.makedirs(output_dir, exist_ok=True)
 
 mean_lattice = []
@@ -25,12 +42,10 @@ for i in is_list:
                 print(f"Missing: {dump_path}")
                 continue
             try:
-#                frames = read(dump_path, index=slice(0, 50))  # read first 50 frames
-                frames = read(dump_path, index=slice(0, 500, 10))  # read first 50 frames
-#                frames = read(dump_path, index="0:1:50", format="extxyz")
+                frames = read(dump_path, index=slice(sample_start_index, n_frames_dumpxyz, sample_interval))  # read first 50 frames
                 for atoms in frames:
                     lx = atoms.get_cell()[0, 0]  # assume orthogonal box
-                    projected = lx / 105.0          # 105 is replicates along x-axis direction
+                    projected = lx / replicates_along_zigzag          # 105 is replicates along x-axis direction
                     lattice_list.append(projected)
             except Exception as e:
                 print(f"Failed to read {dump_path}: {e}")
@@ -38,8 +53,9 @@ for i in is_list:
 
     lattice_array = np.array(lattice_list)
     print(f"Temperature {i} K: {len(lattice_array)} projected lattice constants")
+    
 
-    if lattice_array.size != 300:       #50x6
+    if lattice_array.size != n_frames_dumpxyz / sample_interval * len(ks_list) :       #50x6
         print(f"Warning: Expected 300 values (50 frames * 6 runs), got {lattice_array.size}")
 
     try:
@@ -51,6 +67,29 @@ for i in is_list:
         print(f"Reshape failed at T={i}K with {lattice_array.size} entries: {e}")
         mean_lattice.append(np.nan)
         std_lattice.append(np.nan)
+
+
+    if i in selected_temps:
+        #plt.hist(lattice_array, bins=100, density=True, alpha=0.6, edgecolor='black', label=f"{i} K", color=color_map[i])
+        plt.hist(lattice_array, bins=20, density=True, alpha=0.6,
+         edgecolor='black', label=f"{i} K", color=color_map[i])
+
+
+
+# Finalize and save combined histogram figure
+plt.xlabel("Projected lattice constant (Å)", fontsize=15)
+plt.ylabel("Probability", fontsize=15)
+plt.xticks(fontsize=15)
+plt.yticks(fontsize=15)
+plt.grid(True)
+plt.legend()
+plt.xlim(2.44, 2.467)
+plt.tight_layout()
+plt.savefig(os.path.join(output_dir, "fig_histogram-projected-lattice_vary-T.png"), dpi=200)
+# plt.close()
+
+
+
 
 # Save data to file in current directory
 output_data_path = "lattice-temperature.txt"
@@ -72,7 +111,7 @@ plt.ylim(2.40, 2.55)
 plt.xticks(fontsize=15)
 plt.yticks(fontsize=15)
 plt.tight_layout()
-plt.savefig(os.path.join(output_dir, "lattice_vs_temperature.png"), dpi=200)
+plt.savefig(os.path.join(output_dir, "fig_projected-lattice-T.png"), dpi=200)
 # plt.close()
 
 print(f"Saved plot to {output_dir}")
