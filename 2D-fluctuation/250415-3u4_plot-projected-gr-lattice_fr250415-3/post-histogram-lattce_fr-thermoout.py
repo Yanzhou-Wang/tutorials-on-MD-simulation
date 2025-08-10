@@ -1,7 +1,8 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from ase.io import read
+#from ase.io import read
+from calorine.gpumd import read_thermo
 
 # Settings
 is_list = [100, 400, 700, 1000, 1300, 1600, 1900, 2300, 2700, 3100, 3500]
@@ -10,9 +11,11 @@ ks_list = [1, 2, 3, 4, 5, 6]
 
 replicates_along_zigzag = 105  # for 25200 atoms
 
-n_frames_dumpxyz = 500
-sample_interval = 10
-sample_start_index = 0
+n_frames_last = 500
+
+#n_frames_dumpxyz = 500
+#sample_interval = 10
+#sample_start_index = 0
 
 selected_temps = [400, 1000, 1600, 2300, 3500]  # for histgram
 
@@ -37,37 +40,23 @@ for i in is_list:
     for j in js_list:
         for k in ks_list:
             job_dir = f"job_{i}_{j}_{k}"
-            dump_path = os.path.join(job_root, job_dir, "dump.xyz")
-            if not os.path.exists(dump_path):
-                print(f"Missing: {dump_path}")
+            thermo_path = os.path.join(job_root, job_dir, "thermo.out")
+            if not os.path.exists(thermo_path):
+                print(f"Missing: {thermo_path}")
                 continue
             try:
-                frames = read(dump_path, index=slice(sample_start_index, n_frames_dumpxyz, sample_interval))  # read first 50 frames
-                for atoms in frames:
-                    lx = atoms.get_cell()[0, 0]  # assume orthogonal box
-                    projected = lx / replicates_along_zigzag          # 105 is replicates along x-axis direction
-                    lattice_list.append(projected)
+                thermos = read_thermo(thermo_path)
+                if len(thermos) < n_frames_last:
+                    print(f"Warning: only {len(thermos)} frames in {thermo_path}")
+                    continue
+                thermos_selected = thermos.iloc[-n_frames_last:]
+                lxs = thermos_selected['cell_xx'].values
+                projected_l = lxs / replicates_along_zigzag
+                lattice_list.extend(projected_l)
+                lattice_array = np.array(lattice_list)
             except Exception as e:
-                print(f"Failed to read {dump_path}: {e}")
+                print(f"Error reading {thermo_path}: {e}")
                 continue
-
-    lattice_array = np.array(lattice_list)
-    print(f"Temperature {i} K: {len(lattice_array)} projected lattice constants")
-    
-
-    if lattice_array.size != n_frames_dumpxyz / sample_interval * len(ks_list) :       #50x6
-        print(f"Warning: Expected 300 values (50 frames * 6 runs), got {lattice_array.size}")
-
-    try:
-        #matrix = lattice_array.reshape((50, 6))  # shape: (50 rows, 6 cols)
-        #col_means = matrix.mean(axis=0)  # get 6 mean values
-        mean_lattice.append(np.mean(lattice_array))
-        std_lattice.append(np.std(lattice_array))
-    except Exception as e:
-        print(f"Reshape failed at T={i}K with {lattice_array.size} entries: {e}")
-        mean_lattice.append(np.nan)
-        std_lattice.append(np.nan)
-
 
     if i in selected_temps:
         #plt.hist(lattice_array, bins=100, density=True, alpha=0.6, edgecolor='black', label=f"{i} K", color=color_map[i])
@@ -85,12 +74,12 @@ plt.grid(True)
 plt.legend()
 plt.xlim(2.44, 2.467)
 plt.tight_layout()
-plt.savefig(os.path.join(output_dir, "inappropriate-pfig_histogram-projected-lattice_vary-T.png"), dpi=200)
+plt.savefig(os.path.join(output_dir, "fig_histogram-projected-lattice_vary-T.png"), dpi=200)
 # plt.close()
 
 
 
-
+'''
 # Save data to file in current directory
 output_data_path = "lattice-temperature.txt"
 with open(output_data_path, 'w') as f:
@@ -116,3 +105,4 @@ plt.savefig(os.path.join(output_dir, "fig_projected-lattice-T.png"), dpi=200)
 
 print(f"Saved plot to {output_dir}")
 print(f"Saved data to {output_data_path}")
+'''

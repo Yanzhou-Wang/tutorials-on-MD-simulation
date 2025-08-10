@@ -107,13 +107,15 @@ for i in is_list:
     
     
 # Finalize and save combined histogram figure
+plt.axvline(x=2.47, color='black', linestyle='--', linewidth=1.2, label=r'$a_{400} = 2.47$')
+plt.axvline(x=2.5, color='black', linestyle='-.', linewidth=1.2, label=r'$a_{3500} = 2.5$')
 plt.xlabel("Apparent lattice constant (Å)", fontsize=15)
 plt.ylabel("Probability", fontsize=15)
 plt.xticks(fontsize=15)
 plt.yticks(fontsize=15)
 plt.grid(True)
 plt.legend()
-plt.xlim(2, 3)
+plt.xlim(2.1, 2.9)
 plt.tight_layout()
 plt.savefig(os.path.join(output_dir, "fig_hist-apparent-lattice_vary-T.png"), dpi=200)
 # plt.close()

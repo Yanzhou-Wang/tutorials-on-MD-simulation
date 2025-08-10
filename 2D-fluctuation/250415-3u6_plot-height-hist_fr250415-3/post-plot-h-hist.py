@@ -29,11 +29,11 @@ job_root = "../250415-3_graphene-lattice-vs-T_npt-scr_25200atom_denser-traj_6cyc
 output_dir = "./"
 os.makedirs(output_dir, exist_ok=True)
 
-mean_lattice = []
-std_lattice = []
+#mean_lattice = []
+#std_lattice = []
 
 for i in is_list:
-    lattice_list = []
+    h_list = []
     for j in js_list:
         for k in ks_list:
             job_dir = f"job_{i}_{j}_{k}"
@@ -44,14 +44,19 @@ for i in is_list:
             try:
                 frames = read(dump_path, index=slice(sample_start_index, n_frames_dumpxyz, sample_interval))  # read first 50 frames
                 for atoms in frames:
-                    lx = atoms.get_cell()[0, 0]  # assume orthogonal box
-                    projected = lx / replicates_along_zigzag          # 105 is replicates along x-axis direction
-                    lattice_list.append(projected)
+                    hs=atoms.positions[:, 2]
+                    hs_average=np.mean(hs)
+                    hs= hs-hs_average
+#                    lx = atoms.get_cell()[0, 0]  # assume orthogonal box
+#                    projected = lx / replicates_along_zigzag          # 105 is replicates along x-axis direction
+                    h_list.extend(hs)
             except Exception as e:
                 print(f"Failed to read {dump_path}: {e}")
                 continue
 
-    lattice_array = np.array(lattice_list)
+    h_list = np.array(h_list)
+    
+    '''
     print(f"Temperature {i} K: {len(lattice_array)} projected lattice constants")
     
 
@@ -67,30 +72,31 @@ for i in is_list:
         print(f"Reshape failed at T={i}K with {lattice_array.size} entries: {e}")
         mean_lattice.append(np.nan)
         std_lattice.append(np.nan)
-
+    '''
 
     if i in selected_temps:
         #plt.hist(lattice_array, bins=100, density=True, alpha=0.6, edgecolor='black', label=f"{i} K", color=color_map[i])
-        plt.hist(lattice_array, bins=20, density=True, alpha=0.6,
+        print(f"========Temperature {i} K is runing ========")
+        plt.hist(h_list, bins=50, density=True, alpha=0.6,
          edgecolor='black', label=f"{i} K", color=color_map[i])
 
 
 
 # Finalize and save combined histogram figure
-plt.xlabel("Projected lattice constant (Å)", fontsize=15)
+plt.xlabel("Height (Å)", fontsize=15)
 plt.ylabel("Probability", fontsize=15)
 plt.xticks(fontsize=15)
 plt.yticks(fontsize=15)
 plt.grid(True)
 plt.legend()
-plt.xlim(2.44, 2.467)
+plt.xlim(-10, 10)
 plt.tight_layout()
-plt.savefig(os.path.join(output_dir, "inappropriate-pfig_histogram-projected-lattice_vary-T.png"), dpi=200)
+plt.savefig(os.path.join(output_dir, "fig_hist-h_vary-T.png"), dpi=200)
 # plt.close()
 
 
 
-
+"""
 # Save data to file in current directory
 output_data_path = "lattice-temperature.txt"
 with open(output_data_path, 'w') as f:
@@ -116,3 +122,4 @@ plt.savefig(os.path.join(output_dir, "fig_projected-lattice-T.png"), dpi=200)
 
 print(f"Saved plot to {output_dir}")
 print(f"Saved data to {output_data_path}")
+"""
