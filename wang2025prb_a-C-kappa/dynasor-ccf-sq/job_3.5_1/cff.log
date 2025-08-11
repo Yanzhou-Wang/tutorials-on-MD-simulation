@@ -1,0 +1,18 @@
+INFO: Trajectory file: ./dump.xyz
+INFO: Total number of particles: 8000
+INFO: Number of atom types: 1
+INFO: Number of atoms of type X: 8000
+INFO: Simulation cell (in Angstrom):
+[[35.712  0.     0.   ]
+ [ 0.    35.712  0.   ]
+ [ 0.     0.    35.712]]
+INFO: Spacing between samples (frame_step): 1
+INFO: Time between consecutive frames in input trajectory (dt): 10 fs
+INFO: Time between consecutive frames used (dt * frame_step): 10 fs
+INFO: Time window size (dt * frame_step * window_size): 1000.0 fs
+INFO: Angular frequency resolution: dw = 0.006283 2pi/fs = 4.136 meV
+INFO: Maximum angular frequency (dw * window_size): 0.628319 2pi/fs = 413.567 meV
+INFO: Nyquist angular frequency (2pi / frame_step / dt / 2): 0.314 2pi/fs = 206.8 meV
+INFO: Calculating current (velocity) correlations
+INFO: Number of q-points: 136
+Execution time: 7.978478193283081 seconds
