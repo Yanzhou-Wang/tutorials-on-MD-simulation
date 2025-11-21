@@ -36,3 +36,8 @@ isol_ener=0
 ener=$(grep "free  energy   TOTEN" OUTCAR | tail -1 | awk '{printf "%.6f\n", $5 - '$n_sys' * '$isol_ener'}')
 ts=$(grep "T\*S" OUTCAR |tail -n 1 | awk '{printf("%12.6f\n", $5/'$n_sys')}')
 ```
+# Extract elastic constants
+
+```
+ grep -A 8 "TOTAL ELASTIC MODULI" OUTCAR |tail -n 6
+```
