@@ -36,6 +36,20 @@ isol_ener=0
 ener=$(grep "free  energy   TOTEN" OUTCAR | tail -1 | awk '{printf "%.6f\n", $5 - '$n_sys' * '$isol_ener'}')
 ts=$(grep "T\*S" OUTCAR |tail -n 1 | awk '{printf("%12.6f\n", $5/'$n_sys')}')
 ```
+
+```
+#!/bin/bash
+wf="data-dft-FeCo.txt"
+rm -f $wf
+touch $wf
+
+for i in `seq 0 1 14`
+do  
+    ener=$(grep "free  energy   TOTEN" $i/OUTCAR | tail -1 | awk '{printf "%.6f\n", $5}')    
+    echo "$i    $ener" >> $wf
+    echo "$i done ..." 
+done
+```
 # Extract elastic constants
 
 ```
