@@ -1,3 +1,11 @@
+# extract data
+```
+volume=$(grep "volume of cell" OUTCAR |tail -n 1 |awk '{print $5}')                #get volume of box (A^3)
+N=$(grep "number of ions" OUTCAR |tail -n 1 |awk '{print $12}')                       #get particle number of system
+ener=$(grep "free  energy   TOTEN" OUTCAR | tail -1 | awk '{printf "%.6f\n", $5}')        #free energy
+```
+
+
 # Enumeate (all) vasp cases incuding OUTCAR
 ```
 targ_file="OUTCAR"
