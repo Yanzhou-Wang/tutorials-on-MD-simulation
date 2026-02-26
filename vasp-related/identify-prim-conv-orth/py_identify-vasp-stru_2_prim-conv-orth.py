@@ -1,19 +1,53 @@
 #!/usr/bin/env python3
 """
-Convert VASP structures (POSCAR/CONTCAR/*.vasp) to standardized
-primitive and conventional cells using ASE + spglib.
+py_identify-vasp-stru_2_prim-conv-orth.py
 
-Outputs in the same directory:
-  prim.vasp  - standardized primitive cell (VASP5 with species + counts)
-  conv.vasp  - standardized conventional cell (VASP5 with species + counts)
-  orth.vasp  - orthorhombic cell if hex/trigonal (VASP5 with species + counts)
+Convert VASP structures to standardized primitive and conventional cells using ASE + spglib.
+
+Outputs:
+  - prim.vasp  : standardized primitive cell (VASP5 with species + counts)
+  - conv.vasp  : standardized conventional cell (VASP5 with species + counts)
+  - orth.vasp  : orthorhombic cell if hex/trigonal (VASP5 with species + counts)
+
+Usage (new --name mode, recursive search by exact filename):
+  1) Search in current directory (recursive) and write outputs next to each found file to the place where corresponding CONTCAR stay:
+       py_identify-vasp-stru_2_prim-conv-orth.py --name CONTCAR
+       py_identify-vasp-stru_2_prim-conv-orth.py --name CONTCAR ./
+
+  2) Search in read_dir (recursive) and write outputs next to each found file to the place where corresponding CONTCAR stays:
+       py_identify-vasp-stru_2_prim-conv-orth.py --name CONTCAR read_dir
+
+  3) Search in read_dir (recursive), but write outputs into write_dir (keep relative paths),
+     and also copy the original input file (NAME) into the mirrored directory:
+       py_identify-vasp-stru_2_prim-conv-orth.py --name CONTCAR read_dir write_dir
+
+  NOTE:
+    --name can be any filename (e.g., POSCAR / CONTCAR / xxx.vasp), as long as the file
+    content is a VASP structure readable by ASE.
+
+Usage (legacy mode, keep compatible with your original script):
+  - Provide one or more input files / globs:
+       py_identify-vasp-stru_2_prim-conv-orth.py POSCAR CONTCAR *.vasp
+
+Input:
+  - VASP structure file(s) readable by ASE (POSCAR/CONTCAR/*.vasp), either via:
+      (a) --name NAME (recursive search), or
+      (b) legacy positional globs.
+
+Output:
+  - In --name mode with one output root (write_dir provided): outputs written under write_dir
+    with relative directory structure preserved; also copies the input NAME file.
+  - Otherwise: outputs written in the same directory as each input file.
 """
 
 import sys
 import os
 import glob
 import argparse
+import shutil
 import numpy as np
+from pathlib import Path
+
 from ase import Atoms
 from ase.io import read, write
 import spglib
@@ -78,8 +112,10 @@ def species_order_like(reference: Atoms, target: Atoms) -> Atoms:
 def looks_primitive(original: Atoms, prim: Atoms) -> bool:
     if len(original) != len(prim):
         return False
+
     def params(a: Atoms):
         return np.r_[a.cell.lengths(), a.cell.angles()]
+
     return np.allclose(params(original), params(prim), atol=1e-3, rtol=5e-4)
 
 
@@ -109,15 +145,11 @@ def ensure_right_handed(atoms: Atoms, eps: float = 1e-12) -> Atoms:
     return a
 
 
-
 def align_orth_cell_to_axes(atoms: Atoms, eps: float = 1e-10) -> Atoms:
     """
     For an (almost) orthorhombic cell, rotate the whole structure so that
     lattice vectors a,b,c align with x,y,z axes respectively (right-handed),
     and set the cell to diag(|a|,|b|,|c|).
-
-    This is a pure rotation (plus tiny numerical cleanup), so it does NOT
-    change interatomic distances / structure physics.
     """
     a0 = atoms.copy()
 
@@ -145,27 +177,18 @@ def align_orth_cell_to_axes(atoms: Atoms, eps: float = 1e-10) -> Atoms:
         return a0
     uc_rh /= n_uc
 
-    # Build rotation: components along (ua,ub,uc_rh)
-    # For a cartesian position r, new coords are [r·ua, r·ub, r·uc_rh]
     U = np.vstack([ua, ub, uc_rh])  # rows
 
-    # Rotate positions
-    pos = a0.get_positions()              # (N,3) cart
-    pos_new = pos @ U.T                   # (N,3)
+    pos = a0.get_positions()
+    pos_new = pos @ U.T
 
-    # Set new axis-aligned orthorhombic cell
     cell_new = np.diag([la, lb, lc])
 
     a0.set_cell(cell_new, scale_atoms=False)
     a0.set_positions(pos_new)
-
-    # Wrap into cell (avoid negative/over-range fractional due to rotation)
     a0.wrap(eps=1e-12)
 
     return a0
-
-
-
 
 
 # === FIX: 总是以 VASP5 写出（显式元素行 + 计数行）；保留回退以兼容旧 ase ===
@@ -173,7 +196,6 @@ def safe_write_vasp(path, atoms, direct=True, vasp5=True, sort=True):
     try:
         write(path, atoms, format="vasp", direct=direct, vasp5=vasp5, sort=sort)
     except TypeError:
-        # 部分旧版 ASE 可能不接受 vasp5/sort 关键字
         write(path, atoms, format="vasp", direct=direct)
 
 
@@ -206,9 +228,73 @@ def try_make_orthorhombic(conv, sg_info=None):
     return None
 
 
+def _process_one_file(path, out_dir, symprec, angle_tol, preserve_order):
+    try:
+        atoms_in = read(path, format="vasp")
+    except Exception as e:
+        print(f"[SKIP] {path}: failed to read ({e})")
+        return
+
+    try:
+        prim = standardized_cell(atoms_in, to_primitive=True,
+                                 symprec=symprec, angle_tolerance=angle_tol)
+        conv = standardized_cell(atoms_in, to_primitive=False,
+                                 symprec=symprec, angle_tolerance=angle_tol)
+    except Exception as e:
+        print(f"[SKIP] {path}: spglib standardization failed ({e})")
+        return
+
+    if prim is None or conv is None:
+        print(f"[SKIP] {path}: spglib returned None (try larger --symprec, e.g., 1e-2)")
+        return
+
+    if preserve_order:
+        prim = species_order_like(atoms_in, prim)
+        conv = species_order_like(atoms_in, conv)
+
+    prim = ensure_right_handed(prim)
+    conv = ensure_right_handed(conv)
+
+    sg_in, n_in = get_spacegroup_info(atoms_in, symprec, angle_tol)
+    sg_prim, n_prim = get_spacegroup_info(prim, symprec, angle_tol)
+    sg_conv, n_conv = get_spacegroup_info(conv, symprec, angle_tol)
+    already_prim = looks_primitive(atoms_in, prim)
+
+    out_prim = os.path.join(out_dir, "prim.vasp")
+    out_conv = os.path.join(out_dir, "conv.vasp")
+
+    sort_flag = not preserve_order
+    safe_write_vasp(out_prim, prim, direct=True, vasp5=True, sort=sort_flag)
+    safe_write_vasp(out_conv, conv, direct=True, vasp5=True, sort=sort_flag)
+
+    orth = try_make_orthorhombic(conv)
+    out_orth = os.path.join(out_dir, "orth.vasp")
+
+    if orth is not None:
+        orth = ensure_right_handed(orth)
+        orth = align_orth_cell_to_axes(orth)
+        safe_write_vasp(out_orth, orth, direct=True, vasp5=True, sort=sort_flag)
+        print(f"     Orthorhombic -> orth.vasp : angles={orth.cell.angles()}")
+    else:
+        print("     Orthorhombic -> N/A (non-hexagonal/non-trigonal systems cannot become strictly orthogonal without strain)")
+
+    def det_str(a: Atoms) -> str:
+        return f"{np.linalg.det(a.cell.array): .6f}"
+
+    print(f"[OK] {path}")
+    print(f"     Input        : SG {sg_in:>4} (#{n_in:>3}), atoms={len(atoms_in)}, det(cell)={det_str(atoms_in)}")
+    print(f"     Primitive    -> prim.vasp : SG {sg_prim:>4} (#{n_prim:>3}), atoms={len(prim)}, det(cell)={det_str(prim)}"
+          f"{' [input already primitive]' if already_prim else ''}")
+    print(f"     Conventional -> conv.vasp : SG {sg_conv:>4} (#{n_conv:>3}), atoms={len(conv)}, det(cell)={det_str(conv)}")
+    if orth is not None:
+        print(f"     Orthorhombic -> orth.vasp : atoms={len(orth)}, det(cell)={det_str(orth)}")
+
+
 def main():
     ap = argparse.ArgumentParser(description="Convert VASP structures to standardized primitive and conventional cells.")
-    ap.add_argument("inputs", nargs="+", help="POSCAR/CONTCAR/*.vasp files (glob allowed).")
+    ap.add_argument("inputs", nargs="*", help="POSCAR/CONTCAR/*.vasp files (glob allowed).")
+    ap.add_argument("--name", type=str, default=None,
+                    help="Recursively search for files with this exact filename under read_dir (optionally map to write_dir).")
     ap.add_argument("--symprec", type=float, default=1e-3, help="Distance tolerance for spglib symmetry detection.")
     ap.add_argument("--angle-tol", type=float, default=5.0, help="Angle tolerance (degrees) for spglib.")
     ap.add_argument("--preserve-order", action="store_true",
@@ -216,79 +302,94 @@ def main():
     ap.add_argument("--vasp5", action="store_true", help="(kept for compatibility) Write VASP5 style.")
     args = ap.parse_args()
 
+    # ------------------------
+    # Mode 1: --name recursive mode
+    # ------------------------
+    if args.name is not None:
+        # inputs are treated as [read_dir] or [read_dir, write_dir]
+        if len(args.inputs) == 0:
+            read_dir = Path(".").resolve()
+            write_dir = None
+        elif len(args.inputs) == 1:
+            read_dir = Path(args.inputs[0]).expanduser().resolve()
+            write_dir = None
+        elif len(args.inputs) == 2:
+            read_dir = Path(args.inputs[0]).expanduser().resolve()
+            write_dir = Path(args.inputs[1]).expanduser().resolve()
+        else:
+            print("ERROR: in --name mode, you can pass 0/1/2 positional args: [read_dir] [write_dir]")
+            sys.exit(1)
+
+        if not read_dir.exists() or not read_dir.is_dir():
+            print(f"ERROR: read_dir must be an existing directory: {read_dir}")
+            sys.exit(1)
+
+        if write_dir is not None:
+            if not write_dir.exists() or not write_dir.is_dir():
+                print(f"ERROR: write_dir must be an existing directory: {write_dir}")
+                sys.exit(1)
+
+        # find files by exact filename
+        targets = sorted([p for p in read_dir.rglob(args.name) if p.is_file()])
+        if not targets:
+            print(f"No file named '{args.name}' found under: {read_dir}")
+            sys.exit(1)
+
+        print(f"Search name : {args.name}")
+        print(f"Read dir    : {read_dir}")
+        print(f"Write dir   : {write_dir if write_dir is not None else '(in-place)'}")
+        print(f"Found       : {len(targets)} file(s)\n")
+
+        for path_obj in targets:
+            in_path = str(path_obj)
+
+            if write_dir is None:
+                out_dir = str(path_obj.parent)  # in-place
+            else:
+                rel_parent = path_obj.parent.relative_to(read_dir)
+                out_parent = write_dir / rel_parent
+                out_parent.mkdir(parents=True, exist_ok=True)
+
+                # Copy the original NAME file into mirrored directory
+                dst_infile = out_parent / path_obj.name
+                try:
+                    shutil.copy2(path_obj, dst_infile)
+                except Exception as e:
+                    print(f"[SKIP] {in_path}: failed to copy to {dst_infile} ({e})")
+                    continue
+
+                out_dir = str(out_parent)
+                in_path = str(dst_infile)  # process the copied file (ensures self-contained output tree)
+
+            _process_one_file(
+                path=in_path,
+                out_dir=out_dir,
+                symprec=args.symprec,
+                angle_tol=args.angle_tol,
+                preserve_order=args.preserve_order,
+            )
+
+        return
+
+    # ------------------------
+    # Mode 2: legacy glob inputs mode (keep your original behavior)
+    # ------------------------
     files = []
     for patt in args.inputs:
         files.extend(glob.glob(patt))
     if not files:
-        print("No input files matched.")
+        print("No input files matched. (Tip: use --name NAME [read_dir] [write_dir])")
         sys.exit(1)
 
     for path in files:
-        try:
-            atoms_in = read(path, format="vasp")
-        except Exception as e:
-            print(f"[SKIP] {path}: failed to read ({e})")
-            continue
-
-        try:
-            prim = standardized_cell(atoms_in, to_primitive=True,
-                                     symprec=args.symprec, angle_tolerance=args.angle_tol)
-            conv = standardized_cell(atoms_in, to_primitive=False,
-                                     symprec=args.symprec, angle_tolerance=args.angle_tol)
-        except Exception as e:
-            print(f"[SKIP] {path}: spglib standardization failed ({e})")
-            continue
-
-        if prim is None or conv is None:
-            print(f"[SKIP] {path}: spglib returned None (try larger --symprec, e.g., 1e-2)")
-            continue
-
-        if args.preserve_order:
-            prim = species_order_like(atoms_in, prim)
-            conv = species_order_like(atoms_in, conv)
-
-        # 保证右手系
-        prim = ensure_right_handed(prim)
-        conv = ensure_right_handed(conv)
-
-        sg_in, n_in = get_spacegroup_info(atoms_in, args.symprec, args.angle_tol)
-        sg_prim, n_prim = get_spacegroup_info(prim, args.symprec, args.angle_tol)
-        sg_conv, n_conv = get_spacegroup_info(conv, args.symprec, args.angle_tol)
-        already_prim = looks_primitive(atoms_in, prim)
-
-        #out_dir = os.path.dirname(path)
-        out_dir = "."
-        out_prim = os.path.join(out_dir, "prim.vasp")
-        out_conv = os.path.join(out_dir, "conv.vasp")
-
-        sort_flag = not args.preserve_order
-        # 始终 VASP5 写出（元素名 + 计数）
-        safe_write_vasp(out_prim, prim, direct=True, vasp5=True, sort=sort_flag)   # NOTE: force vasp5
-        safe_write_vasp(out_conv, conv, direct=True, vasp5=True, sort=sort_flag)
-
-        # 生成 orth
-        orth = try_make_orthorhombic(conv)
-        out_orth = os.path.join(out_dir, "orth.vasp")
-        
-        if orth is not None:
-            orth = ensure_right_handed(orth)
-            orth = align_orth_cell_to_axes(orth)   # <<< NEW: make a,b,c parallel to x,y,z
-            safe_write_vasp(out_orth, orth, direct=True, vasp5=True, sort=sort_flag)
-            
-            print(f"     Orthorhombic -> orth.vasp : angles={orth.cell.angles()}")
-        else:
-            print("     Orthorhombic -> N/A (non-hexagonal/non-trigonal systems cannot become strictly orthogonal without strain)")
-
-        # 打印体积符号（右手性确认）
-        def det_str(a: Atoms) -> str:
-            return f"{np.linalg.det(a.cell.array): .6f}"
-        print(f"[OK] {path}")
-        print(f"     Input        : SG {sg_in:>4} (#{n_in:>3}), atoms={len(atoms_in)}, det(cell)={det_str(atoms_in)}")
-        print(f"     Primitive    -> prim.vasp : SG {sg_prim:>4} (#{n_prim:>3}), atoms={len(prim)}, det(cell)={det_str(prim)}"
-              f"{' [input already primitive]' if already_prim else ''}")
-        print(f"     Conventional -> conv.vasp : SG {sg_conv:>4} (#{n_conv:>3}), atoms={len(conv)}, det(cell)={det_str(conv)}")
-        if orth is not None:
-            print(f"     Orthorhombic -> orth.vasp : atoms={len(orth)}, det(cell)={det_str(orth)}")
+        out_dir = os.path.dirname(os.path.abspath(path)) or "."
+        _process_one_file(
+            path=path,
+            out_dir=out_dir,
+            symprec=args.symprec,
+            angle_tol=args.angle_tol,
+            preserve_order=args.preserve_order,
+        )
 
 
 if __name__ == "__main__":
