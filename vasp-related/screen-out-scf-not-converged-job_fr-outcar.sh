@@ -1,27 +1,25 @@
 #!/bin/bash
 # Usage: ./script.sh  # 在当前路径下查找运行abnormal jobs, 或者normal但是scf不收敛的jobs，并把他们分别移入移当前目录的"ABNORMAL-JOB"，和FAIL-SCF-JOB目录。 并继承了他们原来的相对目录
 #
-# Assume abnormal jobs are organized as follows: 
+# Assume abnormal or scf-not-converged jobs are organized as follows: 
 # ./
 # |__ id-mp-1191664-Ta5Ni  
-# |__ id-mp-1218103-Ta4Cu3Ni9  
+# |__ dir1  
 #      |__id-mp-1225687-CuNi
-#         |__id-mp-1191669-Ta5Ni9 
+#      |__id-mp-1191669-Ta5Ni9 
 #
 #[OUTPUTs]:		#正常结束的jobs,但是scf不收敛
 # ./
-# |__FAIL-SCF-JOB
-#    |__ id-mp-1191664-Ta5Ni  
-#    |__ id-mp-1218103-Ta4Cu3Ni9  
+# |__FAIL-SCF-JOB 
+#    |__ dir1  
 #        |__id-mp-1225687-CuNi 
-#           |__id-mp-1191669-Ta5Ni9
 #
 #[OUTPUTs]:
 # ./
 # |__ABNORMAL-JOB	#非正常结束的jobs.
-#    |__ id-mp-119164-Cu5Ni  
-#    |__ id-mp-121813-Ta4Cu3  
-#        |__id-mp-122567-CuNi3 
+#    |__ id-mp-1191664-Ta5Ni   
+#    |__ dir1 
+#        |__id-mp-1191669-Ta5Ni9 
 
 r_f="OUTCAR"
 
