@@ -5,16 +5,16 @@
 # Assume abnormal jobs are organized as follows: 
 # ./
 # |__ id-mp-1191664-Ta5Ni  
-# |__ id-mp-1218103-Ta4Cu3Ni9  
-#      |__id-mp-1225687-CuNi
+# |__ dir1  
+#      |__dir2
 #         |__id-mp-1191669-Ta5Ni9 
 #
 #[OUTPUTs]:
 # ./
 # |__ABNORMAL-JOB
 #    |__ id-mp-1191664-Ta5Ni  
-#    |__ id-mp-1218103-Ta4Cu3Ni9  
-#        |__id-mp-1225687-CuNi 
+#    |__ dir1  
+#        |__dir2 
 #           |__id-mp-1191669-Ta5Ni9
 
 r_f="OUTCAR"
