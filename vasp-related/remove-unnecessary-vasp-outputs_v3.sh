@@ -37,6 +37,5 @@ do
         folder=$(date +%Y-%m-%d-%H:%M)
         mkdir -p ~/recycle/$folder
 		find ./ -name "$i" -type f -exec mv {} ~/recycle/$folder/ \;
-        #find ./ -name "$i" -type f | xargs -n 1 -I{} mv {} ~/recycle/$folder/
-        echo ">>>>>>>>>>> $i removed <<<<<<<<<<<<<<<<" 
+       	echo ">>>>>>>>>>> $i removed <<<<<<<<<<<<<<<<" 
 done
