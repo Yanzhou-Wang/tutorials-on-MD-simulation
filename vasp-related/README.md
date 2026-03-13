@@ -1,4 +1,4 @@
-# Elastic constant
+# I. Elastic constant
 
 - Workflow: 1)VASP优化晶胞/原包 --> 2)使用脚本程序，统一标准化获取优化后的晶胞 --> 3)IBRION=6计算优化后晶胞的弹性常数 --> 4)脚本程序提取弹性常数:
 
