@@ -1,8 +1,12 @@
 # code block
 
-
 ```
-n_sys=$(grep "number of ions" OUTCAR |awk '{print $12}' | tail -n 1)                # get number of ions from OUTCAR
+# get voume/ion (A^3/atom) from OUTCAR
+grep "volume\/ion" OUTCAR | tail -n 1 |awk '{print $5}'
+
+
+## get number of ions from OUTCAR
+n_sys=$(grep "number of ions" OUTCAR |awk '{print $12}' | tail -n 1)         
 
 
 isol_ener=0
