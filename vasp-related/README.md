@@ -1,3 +1,16 @@
+# Elastic constant
+
+- Workflow: 1)VASP优化晶胞/原包 --> 2)使用脚本程序，统一标准化获取优化后的晶胞 --> 3)IBRION=6计算优化后晶胞的弹性常数 --> 4)脚本程序提取弹性常数:
+
+1. IBRION=2/1对原包或晶胞执行优化. `jobid=260224-1_IBRION1-optimize-Li`
+2. 使用`py_identify-vasp-stru_2_prim-conv-orth.py` identify 优化后的`CONTCAR`, 以获取对应的`prim.vasp`, `conv.vasp`, `orth.vasp`等, `jobid=260224-1u2_identify-prim-conv-orth_Li_fr260224-1`
+3. 对优化好的`conv.vasp`晶胞，执行IBRION=6的弹性常数计算. `jobid=260224-2_IBRION6-elastic-constants_simple-subs_ksp0.1_fr260224-1u2`
+4. 从`OUTCAR`中提取弹性常数信息, `jobid=260224-3u1_get-elastic-constant_fr260224-2`
+
+
+
+
+
 # I. AIMD
 
 ## II. NVE MD
