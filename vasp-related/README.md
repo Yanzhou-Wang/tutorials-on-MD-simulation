@@ -1,14 +1,48 @@
+# I. Optimized lattice parameter
+
+-Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) 使用脚本程序，提取并表格化晶格常数:
+
+1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞. 
+2. `jobid=260224-1u2_identify-prim-conv-orth_Li_fr260224-1`, 使用`py_identify-vasp-stru_2_prim-conv-orth.py` identify 优化后的`CONTCAR`, 以获取对应的`prim.vasp`, `conv.vasp`, `orth.vasp`等
+3. `jobid=260224-1u3_table-lattice-parameter_Li_fr260224-1u2`, 使用`py_table-lattice-para_fr-optimized-conv-cell.py` 提取并表格化晶格常数  
+
+
+
+
 # I. Elastic constant
 
-- Workflow: 1)VASP优化晶胞/原包 --> 2)使用脚本程序，统一标准化获取优化后的晶胞 --> 3)IBRION=6计算优化后晶胞的弹性常数 --> 4)脚本程序提取弹性常数:
+- Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) IBRION=6计算优化后晶胞的弹性常数 --> 4) 脚本程序提取弹性常数:
 
-1. IBRION=2/1对原包或晶胞执行优化. `jobid=260224-1_IBRION1-optimize-Li`
-2. 使用`py_identify-vasp-stru_2_prim-conv-orth.py` identify 优化后的`CONTCAR`, 以获取对应的`prim.vasp`, `conv.vasp`, `orth.vasp`等, `jobid=260224-1u2_identify-prim-conv-orth_Li_fr260224-1`
-3. 对优化好的`conv.vasp`晶胞，执行IBRION=6的弹性常数计算. `jobid=260224-2_IBRION6-elastic-constants_simple-subs_ksp0.1_fr260224-1u2`
-4. 从`OUTCAR`中提取弹性常数信息, `jobid=260224-3u1_get-elastic-constant_fr260224-2`
+1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞
+2. `jobid=260224-1u2_identify-prim-conv-orth_Li_fr260224-1`, 使用`py_identify-vasp-stru_2_prim-conv-orth.py` identify 优化后的`CONTCAR`, 以
+    获取对应的`prim.vasp`, `conv.vasp`, `orth.vasp`等
+3. `jobid=260224-2_IBRION6-elastic-constants_Li_ksp0.1_fr260224-1u2`, 对优化好的`conv.vasp`晶胞，执行IBRION=6的弹性常数计算
+4. `jobid=260224-3u1_table-elastic-constant_Li_fr260224-2`, 从`OUTCAR`中提取弹性常数信息
 
 
 
+# I. EOS (VASP vs. NEP)
+
+ - Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) 使用脚本程序生成三轴同比应变结构 --> 4) VASP/GPUMD单点计算 --> 5) 表格化数据并绘图
+
+1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞 
+2. `jobid=260224-1u2_identify-prim-conv-orth_Li_fr260224-1`, 使用`py_identify-vasp-stru_2_prim-conv-orth.py` identify 优化后的`CONTCAR`, 以
+    获取对应的`prim.vasp`, `conv.vasp`, `orth.vasp`等
+3. `jobid=260227-1u1_create-triaxial-strain-Li-struc-for-EOS_fr260224-1u2`, `1py1-1_gen_isotropic_strain_conv.py`读取`conv.vasp` 生成三轴同比应变结构
+4. `jobid=260227-1_IBRION-1-scf_triaxial-EOS_Li_fr260227-1u1`, VASP单点计算； `jobid=260227-2_gpumd-single-point-triaxial-EOS_Li_fr260227-1u1`, GPUMD单点计算
+5. `jobid=260227-3u2_table-plot-triaxial-EOS_Li_DFT-NEP_fr260227-1-260227-2`, 表格化DFT和NEP数据，并绘图
+
+
+# I. Potential energy vs. uniaxial strain (VASP vs. NEP)
+
+- Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`orth.vasp` --> 3) 使用脚本程序对称性分析并遍历非等价轴,生成单轴应变结构 --> 4) VASP/GPUMD单点计算 --> 5) 表格化数据并绘图
+
+1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞
+2. `jobid=260224-1u2_identify-prim-conv-orth_Li_fr260224-1`, 使用`py_identify-vasp-stru_2_prim-conv-orth.py` identify 优化后的`CONTCAR`, 以
+    获取对应的`prim.vasp`, `conv.vasp`, `orth.vasp`等
+3. `jobid=260229-1u1_create-uniaxial-strain-Li-struc_fr260224-1u2`, `1py1-1_gen_uniaxial_strain_orth.py`读取`orth.vasp`生成所有非等价轴的系列单轴应变结构
+4. `jobid=260229-1_IBRION-1-scf_uniaxial_Li_fr260229-1u1`, VASP单点计算；`jobid=260229-2_gpumd-single-point_uniaxial_Li_fr260229-1u1`, GPUMD单点计算
+5. `jobid=260229-3u1_table-plot-Li-uniaxial-energy-vs-strain_DFT-NEP_fr260229-1-260229-2`, 表格化DFT和NEP数据，并绘图
 
 
 # I. AIMD

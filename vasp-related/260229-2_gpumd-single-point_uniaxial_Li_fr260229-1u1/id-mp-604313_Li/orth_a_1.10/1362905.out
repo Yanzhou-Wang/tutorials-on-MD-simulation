@@ -1,0 +1,113 @@
+
+***************************************************************
+*                 Welcome to use GPUMD                        *
+*     (Graphics Processing Units Molecular Dynamics)          *
+*                     version 4.8                             *
+*              This is the gpumd executable                   *
+***************************************************************
+
+
+---------------------------------------------------------------
+Compiling options:
+---------------------------------------------------------------
+
+DEBUG is off: Use different PRNG seeds for different runs.
+
+---------------------------------------------------------------
+GPU information:
+---------------------------------------------------------------
+
+number of GPUs = 1
+Device id:                   0
+    Device name:             Tesla V100-SXM2-16GB
+    Compute capability:      7.0
+    Amount of global memory: 15.7726 GB
+    Number of SMs:           80
+
+---------------------------------------------------------------
+Started running GPUMD.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started initializing positions and related parameters.
+---------------------------------------------------------------
+
+Number of atoms is 4000.
+Use periodic boundary conditions along x.
+Use periodic boundary conditions along y.
+Use periodic boundary conditions along z.
+Box matrix h = [a, b, c] is
+    4.8880117485e+01    0.0000000000e+00    0.0000000000e+00
+    0.0000000000e+00    4.4436470441e+01    0.0000000000e+00
+    0.0000000000e+00    0.0000000000e+00    4.4436470441e+01
+Inverse box matrix g = inv(h) is
+    2.0458215967e-02    0.0000000000e+00    0.0000000000e+00
+    0.0000000000e+00    2.2504037564e-02    0.0000000000e+00
+    0.0000000000e+00    0.0000000000e+00    2.2504037564e-02
+Do not specify initial velocities here.
+Have no grouping method.
+There are 4 atom types.
+    4000 atoms of type 0.
+    0 atoms of type 1.
+    0 atoms of type 2.
+    0 atoms of type 3.
+Initialized velocities with default T = 300 K.
+
+---------------------------------------------------------------
+Finished initializing positions and related parameters.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started executing the commands in run.in.
+---------------------------------------------------------------
+
+Use the NEP4 potential with 4 atom types.
+    type 0 (Li with Z = 3).
+    type 1 (Ni with Z = 28).
+    type 2 (Cu with Z = 29).
+    type 3 (Ta with Z = 73).
+    has the universal ZBL with typewise cutoff with a factor of 0.7.
+    radial cutoff = 6 A.
+    angular cutoff = 5 A.
+    MN_radial = 138.
+    enlarged MN_radial = 173.
+    enlarged MN_angular = 98.
+    n_max_radial = 8.
+    n_max_angular = 6.
+    basis_size_radial = 8.
+    basis_size_angular = 8.
+    l_max_3body = 4.
+    l_max_4body = 2.
+    l_max_5body = 0.
+    ANN = 44-100-1.
+    number of neural network parameters = 18401.
+    number of descriptor parameters = 2304.
+    total number of parameters = 20705.
+Use NVE ensemble for this run.
+Time step for this run is 0 fs.
+Dump thermo every 1 steps.
+Run 1 steps.
+    1 steps completed.
+
+---------------------------------------------------------------
+Time used for this run = 0.00197373 second.
+Speed of this run = 2.02662e+06 atom*step/second.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Finished executing the commands in run.in.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Time used = 0.022916 s.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Finished running GPUMD.
+---------------------------------------------------------------
+
