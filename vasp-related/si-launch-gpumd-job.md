@@ -29,12 +29,10 @@ cat > submit-gpumd-job.sbatch <<!
 #SBATCH --output=%j.out
 #SBATCH --error=%j.err
 
-module load cuda/12.5
-
 ulimit -s unlimited
 ulimit -l unlimited
 
+module load cuda/12.5
 $code
 !
-
 ```
