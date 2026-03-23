@@ -1,6 +1,6 @@
 # I. Optimized lattice parameter
 
--Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) 使用脚本程序，提取并表格化晶格常数:
+- Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) 使用脚本程序，提取并表格化晶格常数:
 
 1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞. 
 2. `jobid=260224-1u2_identify-prim-conv-orth_Li_fr260224-1`, 使用`py_identify-vasp-stru_2_prim-conv-orth.py` identify 优化后的`CONTCAR`, 以获取对应的`prim.vasp`, `conv.vasp`, `orth.vasp`等
@@ -43,6 +43,11 @@
 3. `jobid=260229-1u1_create-uniaxial-strain-Li-struc_fr260224-1u2`, `1py1-1_gen_uniaxial_strain_orth.py`读取`orth.vasp`生成所有非等价轴的系列单轴应变结构
 4. `jobid=260229-1_IBRION-1-scf_uniaxial_Li_fr260229-1u1`, VASP单点计算；`jobid=260229-2_gpumd-single-point_uniaxial_Li_fr260229-1u1`, GPUMD单点计算
 5. `jobid=260229-3u1_table-plot-Li-uniaxial-energy-vs-strain_DFT-NEP_fr260229-1-260229-2`, 表格化DFT和NEP数据，并绘图
+
+
+
+
+
 
 
 # I. AIMD
