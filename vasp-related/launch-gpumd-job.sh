@@ -14,12 +14,12 @@ do
 		for k in ${!ks[*]} 
 		do
 			jn="JOB-NAME"
-            mkdir -p $jn
-            cd $jn
-    
-            #model.xyz
-            stru_n="STRU-FILE"
-            cp $stru_dir/$stru_n ./model.xyz
+			mkdir -p $jn
+			cd $jn
+			
+			#model.xyz
+			stru_n="STRU-FILE"
+			cp $stru_dir/$stru_n ./model.xyz
     
             #run.in
             cat > run.in << !
