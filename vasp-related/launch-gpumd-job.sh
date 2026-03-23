@@ -7,8 +7,8 @@ stru_dir="$cwd/DIRE-TO-STRUCTURE"
 is=(XX YY ZZ)                               
 for i in ${!is[*]}
 do
-	  js=(XX2 YY2 ZZ2)
-	  for j in ${!js[*]}
+		js=(XX2 YY2 ZZ2)
+		for j in ${!js[*]}
     do
         ks=(XX3 YY3 ZZ3)
         for k in ${!ks[*]} 
