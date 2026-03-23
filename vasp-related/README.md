@@ -33,7 +33,7 @@
 5. `jobid=260227-3u2_table-plot-triaxial-EOS_Li_DFT-NEP_fr260227-1-260227-2`, 表格化DFT和NEP数据，并绘图
 
 
-# I. Potential energy vs. uniaxial strain (`VASP` + `NEP`)
+# I. Uniaxial deformation: potential energy vs. strain (`VASP` + `NEP`)
 
 - Workflow: 1) `VASP`优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`orth.vasp` --> 3) 使用脚本程序对称性分析并遍历非等价轴,生成单轴应变结构 --> 4) `VASP`/`NEP-GPUMD`单点计算 --> 5) 表格化数据并绘图
 
