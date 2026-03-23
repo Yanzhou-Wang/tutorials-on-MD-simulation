@@ -38,5 +38,5 @@ YYYYYYYYY
 			echo ">>>>>>>>>>>>> ${is[i]} ${js[j]} ${ks[k]} <<<<<<<<<<<<<<<<<"
 			sleep 1s
 		done
-    done
+	done
 done
