@@ -1,4 +1,4 @@
-# I. Relax lattice parameter
+# I. Relax lattice parameter (VASP)
 
 - Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) 使用脚本程序，提取并表格化晶格常数:
 
@@ -9,7 +9,7 @@
 
 
 
-# I. Elastic constant
+# I. Elastic constant (VASP)
 
 - Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) IBRION=6计算优化后晶胞的弹性常数 --> 4) 脚本程序提取弹性常数:
 
