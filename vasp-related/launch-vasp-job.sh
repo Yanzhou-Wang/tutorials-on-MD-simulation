@@ -10,13 +10,13 @@ do
 	js=(XX2 YY2 ZZ2)                # Mandatory Argument, which is secondary for mapping structure name or job name 
 	for j in ${!js[*]}
 	do
-		jn="interface_shift${is[i]}_dist${js[j]}"                    # Mandatory Argument, for building up job name
+		jn="JOB-FILE"                    # Mandatory Argument, for building up job name, probaly ${is[i]}, ${js[j]}-related
 		
 		mkdir -p $jn
 		cd $jn
 		
 		#POSCAR
-		stru_n="interface_shift${is[i]}_dist${js[j]}.vasp"          # Mandatory Argument, for refering to structure name for POSCAR
+		stru_n="STRUCTURE-NAME"          # Mandatory Argument, for refering to structure name for POSCAR, probably ${is[i]}, ${js[j]}-related
 		cp ${stru_dir}/$stru_n POSCAR
 	        
 		#POTCAR
@@ -48,7 +48,6 @@ YYYYYYYYYYYYYYY
 		
 		echo ">>>>>>>>> ${is[i]} | ${js[j]} ......... <<<<<<<<<<<<<<"
 		sleep 1s
-
 	done
 
 done
