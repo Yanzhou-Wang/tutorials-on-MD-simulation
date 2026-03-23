@@ -1,4 +1,4 @@
-# I. Optimized lattice parameter
+# I. Relax lattice parameter
 
 - Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) 使用脚本程序，提取并表格化晶格常数:
 
