@@ -16,15 +16,25 @@ run 		1
 
 # I. sbatch script
 
-## GPU-based gpumd job
+## II. GPU-based gpumd job
 
 ```
-cat > run.in << !
-potential  ${nep_dest}
+cat > submit-gpumd-job.sbatch <<!
+#!/bin/sh
+#SBATCH -N 1                    #1个节点
+#SBATCH -n 1            #1个task. 在调用v100卡时，一个task默认分配3个cores
+#SBATCH --ntasks-per-node=1     
+#SBATCH --partition=v100
+#SBATCH --gres=gpu:1
+#SBATCH --output=%j.out
+#SBATCH --error=%j.err
 
-ensemble 	nve
-time_step 	0
-dump_thermo	1
-run 		1
+module load cuda/12.5
+
+ulimit -s unlimited
+ulimit -l unlimited
+
+$code
 !
+
 ```
