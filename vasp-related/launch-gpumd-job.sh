@@ -9,11 +9,11 @@ for i in ${!is[*]}
 do
 	js=(XX2 YY2 ZZ2)
 	for j in ${!js[*]}
-    do
-        ks=(XX3 YY3 ZZ3)
-        for k in ${!ks[*]} 
-        do
-            jn="JOB-NAME"
+	do
+		ks=(XX3 YY3 ZZ3)
+		for k in ${!ks[*]} 
+		do
+			jn="JOB-NAME"
             mkdir -p $jn
             cd $jn
     
