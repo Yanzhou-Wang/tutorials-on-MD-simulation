@@ -2,7 +2,7 @@
 
 # I. `INCAR` generation
 
-# II. SCF calc for general metals
+## II. SCF calc for general metals
 
 ```
 cat > INCAR <<!
@@ -34,5 +34,42 @@ LWAVE  = .FALSE.
 
 # ===== Performance =====
 LREAL = A
+!
+```
+
+## II. Elastic constant calc for general metals
+
+```
+cat > INCAR <<!
+# ===== Initialization =====
+ISYM = 2
+
+# ===== Elastic / Ionic =====
+IBRION = 6
+ISIF = 3
+NSW = 1
+NFREE = 4
+POTIM = 0.015
+EDIFFG = -1E-2
+
+# ===== Electronic =====
+ENCUT = 600
+PREC = Accurate
+ALGO = Normal
+NELM = 120
+EDIFF = 1E-06
+ISMEAR = 1
+SIGMA = 0.1
+
+# ===== XC =====
+GGA = PE
+
+# ===== Output =====
+LCHARG = .FALSE.
+LWAVE  = .FALSE.
+
+# ===== Performance =====
+LREAL = .FALSE.
+KBLOWUP = .FALSE.
 !
 ```
