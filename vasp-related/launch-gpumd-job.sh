@@ -20,24 +20,23 @@ do
 			#model.xyz
 			stru_n="STRU-FILE"
 			cp $stru_dir/$stru_n ./model.xyz
-    
-            #run.in
-            cat > run.in << !
+			
+			#run.in
+			cat > run.in << !
 XXXXXXXXXXX
 ........
 XXXXXXXXXX
 !
-            #sbatch script
-			      cat > submit-gpumd-job.sbatch <<!
+			#sbatch script
+			cat > submit-gpumd-job.sbatch <<!
 YYYYYYYYY
 .........
 YYYYYYYYY
 !
-			      sbatch submit-gpumd-job.sbatch
-            cd $cwd
-        
-            echo ">>>>>>>>>>>>> ${is[i]} ${js[j]} ${ks[k]} <<<<<<<<<<<<<<<<<"
-			      sleep 1s
-		    done
+			sbatch submit-gpumd-job.sbatch
+			cd $cwd
+			echo ">>>>>>>>>>>>> ${is[i]} ${js[j]} ${ks[k]} <<<<<<<<<<<<<<<<<"
+			sleep 1s
+		done
     done
 done
