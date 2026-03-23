@@ -5,18 +5,18 @@ pot_dir="$cwd/PATH-TO-POT-DIR"        # Mandatory Argument. In the "$pot_dir", y
 stru_dir="$cwd/PATH-To-STRU-DIR"      # Mandatory Argument. $struc_dir refers where structure files for POSCAR are
 
 is=(XX YY ZZ)                     # Mandatory Argument, which is used to map structure name or job name
-for i in ${is[*]}
+for i in ${!is[*]}
 do
 	js=(XX2 YY2 ZZ2)                # Mandatory Argument, which is secondary for mapping structure name or job name 
-	for j in ${js[*]}
+	for j in ${!js[*]}
 	do
-		jn="interface_shift${i}_dist${j}"                    # Mandatory Argument, for building up job name
+		jn="interface_shift${is[i]}_dist${js[j]}"                    # Mandatory Argument, for building up job name
 		
 		mkdir -p $jn
 		cd $jn
 		
 		#POSCAR
-		stru_n="interface_shift${i}_dist${j}.vasp"          # Mandatory Argument, for refering to structure name for POSCAR
+		stru_n="interface_shift${is[i]}_dist${js[j]}.vasp"          # Mandatory Argument, for refering to structure name for POSCAR
 		cp ${stru_dir}/$stru_n POSCAR
 	        
 		#POTCAR
@@ -43,11 +43,10 @@ YYYYYYYYYYYYYYY
 ...............
 YYYYYYYYYYYYYYY
 !
-
 		sbatch submit-job.sbatch
 		cd $cwd
 		
-		echo ">>>>>>>>> $i | $j ......... <<<<<<<<<<<<<<"
+		echo ">>>>>>>>> ${is[i]} | ${js[j]} ......... <<<<<<<<<<<<<<"
 		sleep 1s
 
 	done
