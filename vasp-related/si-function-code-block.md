@@ -35,3 +35,7 @@ n_sys=$(grep "number of ions" $dest/OUTCAR |awk '{print $12}')
 magn_loca_line=$(($n_sys + 5))
 totalM=$(grep -A $magn_loca_line "magnetization (x)" $dest/$n_sys |tail -n 1 | awk '{print $5}')
 ```
+
+
+
+# I. `GPUMD`-related
