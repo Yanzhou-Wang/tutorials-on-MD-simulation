@@ -45,9 +45,10 @@ YYYYYYYYYYYYYYY
 !
 
 		sbatch submit-job.sbatch
+		cd $cwd
+		
 		echo ">>>>>>>>> $i | $j ......... <<<<<<<<<<<<<<"
 		sleep 1s
-		cd $cwd
 
 	done
 
