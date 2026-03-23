@@ -30,15 +30,15 @@ do
 		#$cwd/gen_kpoints_from_kspacing.py $ksp                                              # Option, used for generating KPOINTS file from specifed KSPACING  in INCAR
 		#awk 'NR==4 {$3=1} {print}' KPOINTS > tmp && mv tmp KPOINTS                          # Option, one single gamma point along z-axis, usually used for calculations of surface or interface slab
 
-		#INCAR
-		cat > INCAR <<!                                                                      # Mandatory Argument, for generating INCAR
+		#INCAR																				 # Mandatory Argument, for generating INCAR
+		cat > INCAR <<!                                                                      
  XXXXXXXXXXXXXXXXX        
  ......
  XXXXXXXXXXXXXXXX
  !
 
-
-		cat > submit-job.sbatch <<'!'                                                        # Mandatory Argument, for job launching
+		#sbatch script																		 # Mandatory Argument, for job launching
+		cat > submit-job.sbatch <<'!'                                                        
 YYYYYYYYYYYYYYY
 ...............
 YYYYYYYYYYYYYYY
@@ -49,6 +49,5 @@ YYYYYYYYYYYYYYY
 		echo ">>>>>>>>> ${is[i]} | ${js[j]} ......... <<<<<<<<<<<<<<"
 		sleep 1s
 	done
-
 done
 
