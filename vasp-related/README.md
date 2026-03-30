@@ -1,3 +1,28 @@
+# I. 结构文件格式转化
+## II. `structureFormat_vasp2exyz-v3.py`
+使用非常灵活，结构转化+超胞
+支持的用法：
+
+1) 当前目录递归查找，默认不超胞：   递归寻找POSCR, CONTCAR, 或xxx.vasp格式文件，转化后保存在对应的源目录
+   ./structureFormat_vasp2exyz.py
+
+2) 指定一个路径（目录或单文件），默认不超胞：    显示地给出文件名时，文件名即使不是POSCAR, CONTCAR, xxx.vasp时，也可以
+   ./structureFormat_vasp2exyz.py path/to/dir
+   ./structureFormat_vasp2exyz.py path/to/file
+
+3) 指定源路径 + 超胞：
+   ./structureFormat_vasp2exyz.py path/to/dir Nx Ny Nz
+   ./structureFormat_vasp2exyz.py path/to/file Nx Ny Nz
+
+4) 指定源路径 + 目标目录，默认不超胞：
+   ./structureFormat_vasp2exyz.py path/to/src path/to/dst
+
+5) 指定源路径 + 目标目录 + 超胞：
+   ./structureFormat_vasp2exyz.py path/to/src path/to/dst Nx Ny Nz
+
+
+
+
 # I. Relax lattice parameter (`VASP`)
 
 - Workflow: 1) `VASP`优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) 使用脚本程序，提取并表格化晶格常数:
