@@ -1,7 +1,7 @@
 # I. 结构文件格式转化
 ## II. `structureFormat_vasp2exyz-v3.py`
-使用非常灵活，结构转化+超胞
-支持的用法：
+结构转化+超胞
+使用起来非常灵活，支持的用法：
 
 1) 当前目录递归查找，默认不超胞：   递归寻找POSCR, CONTCAR, 或xxx.vasp格式文件，转化后保存在对应的源目录
    ./structureFormat_vasp2exyz.py
