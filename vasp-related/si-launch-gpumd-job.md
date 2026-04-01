@@ -16,6 +16,8 @@ run 		1
 
 # I. sbatch script
 
+/data/home/wangyanzhou/code_inst/GPUMD-4.8_260214/src/gpumd
+
 ## II. GPU-based gpumd job
 
 ```
