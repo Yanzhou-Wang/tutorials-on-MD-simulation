@@ -21,6 +21,31 @@
    ./structureFormat_vasp2exyz.py path/to/src path/to/dst Nx Ny Nz
 
 
+## II. `structureFormat_cif2vasp.py`
+
+Usage:
+   1) Recursively convert all *.cif under current directory (in-place) and write it in same place where x.cif is:
+        ./py_cif2vasp.py
+        ./py_cif2vasp.py ./
+
+   2) Convert under a given path (in-place) and write it in same place:
+        ./py_cif2vasp.py /path/to/root_dir
+        ./py_cif2vasp.py /path/to/file.cif
+
+   3) Convert from READ_PATH and write outputs into WRITE_PATH:
+        ./py_cif2vasp.py read_path write_path
+
+      - If read_path is a .cif file:
+          write_path/<basename>.vasp
+      - If read_path is a directory:
+          recursively find **/*.cif under read_path, and write to write_path
+          keeping relative subdirectories (to avoid name conflicts).
+
+    4) ../py_cif2vasp.py ../Ta2Ni_mp-1101992_primitive.cif ./
+
+ Output style (same as your original):
+   write(..., format="vasp", vasp5=True, direct=True, sort=False)
+
 
 
 # I. Relax lattice parameter (`VASP`)
