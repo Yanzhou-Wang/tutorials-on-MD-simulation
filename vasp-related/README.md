@@ -3,42 +3,42 @@
 结构转化+超胞
 使用起来非常灵活，支持的用法：
 
-1) 当前目录递归查找，默认不超胞：   递归寻找POSCR, CONTCAR, 或xxx.vasp格式文件，转化后保存在对应的源目录
-   ./structureFormat_vasp2exyz.py
+1) 当前目录递归查找，默认不超胞：   递归寻找`POSCR`, `CONTCAR`, 或`xxx.vasp`格式文件，转化后保存在对应的源目录
+   `./structureFormat_vasp2exyz.py`
 
 2) 指定一个路径（目录或单文件），默认不超胞：    显示地给出文件名时，文件名即使不是POSCAR, CONTCAR, xxx.vasp时，也可以
-   ./structureFormat_vasp2exyz.py path/to/dir
-   ./structureFormat_vasp2exyz.py path/to/file
+   `./structureFormat_vasp2exyz.py path/to/dir`
+   `./structureFormat_vasp2exyz.py path/to/file`
 
 3) 指定源路径 + 超胞：
-   ./structureFormat_vasp2exyz.py path/to/dir Nx Ny Nz
-   ./structureFormat_vasp2exyz.py path/to/file Nx Ny Nz
+   `./structureFormat_vasp2exyz.py path/to/dir Nx Ny Nz`
+   `./structureFormat_vasp2exyz.py path/to/file Nx Ny Nz`
 
 4) 指定源路径 + 目标目录，默认不超胞：
-   ./structureFormat_vasp2exyz.py path/to/src path/to/dst
+   `./structureFormat_vasp2exyz.py path/to/src path/to/dst`
 
 5) 指定源路径 + 目标目录 + 超胞：
-   ./structureFormat_vasp2exyz.py path/to/src path/to/dst Nx Ny Nz
+   `./structureFormat_vasp2exyz.py path/to/src path/to/dst Nx Ny Nz`
 
 
 ## II. `structureFormat_cif2vasp.py`
 
 Usage:
-   1) Recursively convert all *.cif under current directory (in-place) and write it in same place where x.cif is:
-        ./py_cif2vasp.py
-        ./py_cif2vasp.py ./
+   1) Recursively convert all `*.cif` under current directory (in-place) and write it in same place where x.cif is:
+        `./py_cif2vasp.py`
+        `./py_cif2vasp.py ./`
 
    2) Convert under a given path (in-place) and write it in same place:
-        ./py_cif2vasp.py /path/to/root_dir
-        ./py_cif2vasp.py /path/to/file.cif
+        `./py_cif2vasp.py /path/to/root_dir`
+        `./py_cif2vasp.py /path/to/file.cif`
 
    3) Convert from READ_PATH and write outputs into WRITE_PATH:
-        ./py_cif2vasp.py read_path write_path
+        `./py_cif2vasp.py read_path write_path`
 
-      - If read_path is a .cif file:
-          write_path/<basename>.vasp
+      - If read_path is a `.cif` file:
+          `write_path/<basename>.vasp`
       - If read_path is a directory:
-          recursively find **/*.cif under read_path, and write to write_path
+          recursively find `**/*.cif` under read_path, and write to write_path
           keeping relative subdirectories (to avoid name conflicts)
   4) `../py_cif2vasp.py ../Ta2Ni_mp-1101992_primitive.cif ./`
 
