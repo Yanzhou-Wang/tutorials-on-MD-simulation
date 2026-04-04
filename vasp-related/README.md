@@ -1,6 +1,21 @@
 
-# Table of Contents
-- [结构文件格式转化](#结构文件格式转化)
+## Table of Contents
+- [I. 结构文件格式转化](#i-结构文件格式转化)
+  - [II. `structureFormat_vasp2exyz-v3.py`](#ii-structureformat_vasp2exyz-v3py)
+  - [II. `structureFormat_cif2vasp.py`](#ii-structureformat_cif2vasppy)
+
+- [I. Relax lattice parameter (VASP)](#i-relax-lattice-parameter-vasp)
+
+- [I. Elastic constant (VASP)](#i-elastic-constant-vasp)
+
+- [I. EOS (VASP + NEP)](#i-eos-vasp--nep)
+
+- [I. Uniaxial deformation: potential energy vs. strain (VASP + NEP)](#i-uniaxial-deformation-potential-energy-vs-strain-vasp--nep)
+
+- [I. AIMD (VASP)](#i-aimd-vasp)
+  - [II. NVE MD](#ii-nve-md)
+  - [NVT MD](#nvt-md)
+
 
 
 
