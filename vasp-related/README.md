@@ -1,4 +1,8 @@
-[toc]
+
+# Table of Contents
+- [结构文件格式转化](#结构文件格式转化)
+
+
 
 # I. 结构文件格式转化
 ## II. `structureFormat_vasp2exyz-v3.py`
