@@ -35,7 +35,7 @@ YYYYYYYYY
 !
 			sbatch submit-gpumd-job.sbatch
 			cd $cwd
-			echo ">>>>>>>>>>>>> ${is[i]} ${js[j]} ${ks[k]} <<<<<<<<<<<<<<<<<"
+			echo ">>>>>>>>>>>>> ${is[i]} | ${js[j]} | ${ks[k]} <<<<<<<<<<<<<<<<<"
 			sleep 1s
 		done
 	done
