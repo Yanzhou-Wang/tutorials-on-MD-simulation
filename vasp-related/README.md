@@ -39,11 +39,10 @@ Usage:
           write_path/<basename>.vasp
       - If read_path is a directory:
           recursively find **/*.cif under read_path, and write to write_path
-          keeping relative subdirectories (to avoid name conflicts).
+          keeping relative subdirectories (to avoid name conflicts)
+  4) ../py_cif2vasp.py ../Ta2Ni_mp-1101992_primitive.cif ./
 
-    4) ../py_cif2vasp.py ../Ta2Ni_mp-1101992_primitive.cif ./
-
- Output style (same as your original):
+Output style (same as your original):
    write(..., format="vasp", vasp5=True, direct=True, sort=False)
 
 
