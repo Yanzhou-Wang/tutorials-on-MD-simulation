@@ -2,7 +2,7 @@
 
 # I. `INCAR` generation
 
-## II. SCF calc for general metals
+## II. SCF calc for general metals (CU-Ta-Li-Ni)
 
 ```
 cat > INCAR <<!
@@ -37,7 +37,7 @@ LREAL = A
 !
 ```
 
-## II. Elastic constant calc for general metals
+## II. Elastic constant calc for general metals (CU-Ta-Li-Ni)
 
 ```
 cat > INCAR <<!
