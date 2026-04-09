@@ -1,7 +1,10 @@
 # I. `model.xyz` creation
 
-gpumd-related/create-C-diamond-by-density
+- `create-C-diamond-by-density`: Create crystal diamond varying densities, and varying supercell sizes
+
+
 
 
 # I. Post-analysis
 
+- `plot-thermo.out`: plot general quanties that `thermo.out` contains versus generation time, including temperature T(t), potential energy U(t), pressure P(GPa), and lattice parameter curves. 
