@@ -7,4 +7,6 @@
 
 # I. Post-analysis
 
-- `plot-thermo.out`: plot general quanties that `thermo.out` contains versus generation time, including temperature T(t), potential energy U(t), pressure P(GPa), and lattice parameter curves. 
+## II. `plot-thermo.out`
+
+- Plot general quanties that `thermo.out` contains versus generation time, including temperature T(t), potential energy U(t), pressure P(GPa), and lattice parameter curves. 
