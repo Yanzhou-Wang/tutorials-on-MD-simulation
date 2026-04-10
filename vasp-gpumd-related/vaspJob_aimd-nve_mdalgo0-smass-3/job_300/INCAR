@@ -1,0 +1,28 @@
+LWAVE = F
+LCHARG = F
+
+ENCUT = 500
+LREAL = A
+ISMEAR = 0
+SIGMA = 0.1
+EDIFF = 5E-4
+
+IBRION = 0
+MDALGO = 0
+SMASS = -3
+NSW = 50
+ALGO = Normal
+POTIM = 1
+TEBEG = 300
+TEEND = 300
+ISYM = 0
+
+IVDW = 12
+
+LDIPOL = .TRUE.
+IDIPOL = 3
+DIPOL = 0.5 0.5 0.16
+
+# —— 混合参数（表面/大真空更稳）——
+#AMIX   = 0.1
+#BMIX   = 0.0001

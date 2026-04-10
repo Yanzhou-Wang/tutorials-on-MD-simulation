@@ -1,0 +1,6 @@
+potential  /data/home/wangyanzhou/nep-pot/nep_20260205_LiNiCuTa.txt
+
+ensemble 	nve
+time_step 	0
+dump_thermo	1
+run 		1
