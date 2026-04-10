@@ -1,2 +1,0 @@
-# id  a(Angstrom)  b(Angstrom)  c(Angstrom)  alpha(deg)  beta(deg)  gamma(deg)
-id-mp-51_Li               4.313807      4.313807      4.313807     90.000000     90.000000     90.000000
