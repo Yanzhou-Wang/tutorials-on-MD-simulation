@@ -1,23 +1,29 @@
 # TOC
+## Table of Contents
 
-- [I. 结构文件格式转化](#i-结构文件格式转化)
-  
-  - [II. `structureFormat_vasp2exyz-v3.py`](#ii-structureformat_vasp2exyz-v3py)
-  - [II. `structureFormat_cif2vasp.py`](#ii-structureformat_cif2vasppy)
+- [I. Dataset generation and nep plots](#i-dataset-generation-and-nep-plots)
 
-- [I. Relax lattice parameter (VASP)](#i-relax-lattice-parameter-vasp)
+- [I. Pre-process for GPUMD/VASP](#i-pre-process-for-gpumdvasp)
+  - [II. model.xyz creation](#ii-modelxyz-creation)
+  - [II. Structure format conversion](#ii-structure-format-conversion)
+    - [III. structureFormat_vasp2exyz-v3.py](#iii-structureformat_vasp2exyz-v3py)
+    - [III. structureFormat_cif2vasp.py](#iii-structureformat_cif2vasppy)
 
-- [I. Elastic constant (VASP)](#i-elastic-constant-vasp)
+- [I. Post-analysis of GPUMD outputs](#i-post-analysis-of-gpumd-outputs)
+  - [II. plot-thermo.out](#ii-plot-thermoout)
 
-- [I. EOS (VASP + NEP)](#i-eos-vasp--nep)
+- [I. VASP relaxes cell to get lattice parameter](#i-vasp-relaxes-cell-to-get-lattice-parameter)
 
-- [I. Uniaxial deformation: potential energy vs. strain (VASP + NEP)](#i-uniaxial-deformation-potential-energy-vs-strain-vasp--nep)
+- [I. VASP IBRION=-6 computes elastic constants](#i-vasp-ibrion-6-computes-elastic-constants)
 
-- [I. AIMD (VASP)](#i-aimd-vasp)
-  
-  - [II. NVE MD](#ii-nve-md)
-  - [NVT MD](#nvt-md)
+- [I. VASP/GPUMD computes EOS](#i-vaspgpumd-computes-eos)
 
+- [I. VASP/GPUMD computes uniaxial deformation: potential energy vs. strain](#i-vaspgpumd-computes-uniaxial-deformation-potential-energy-vs-strain)
+
+- [I. VASP-AIMD](#i-vasp-aimd)
+  - [II. NVE AIMD](#ii-nve-aimd)
+  - [II. NVT AIMD](#ii-nvt-aimd)
+  - [II. velocity-rescaling MD](#ii-velocity-rescaling-md)
 
 
 # I. Dataset generation and nep plots
