@@ -101,9 +101,9 @@ Output style (same as your original):
 
 # I. Post-analysis of `GPUMD` outputs
 
-## II. `plot-thermo.out` for `GPUMD`
+## II. `plot-thermo.out` vs. time for `GPUMD`
 
-- Plot general quanties that `thermo.out` contains versus generation time, including temperature T(t), potential energy U(t), pressure P(GPa), and lattice parameter curves. 
+- Plot general quanties  versus production time in `thermo.out`, including temperature T(t), potential energy U(t), pressure P(GPa), and lattice parameter curves. 
 
 
 ## II. Compute and plot basic structure properties: coordination number, radial distribution function, bond length function, angular distribution function for `GPUMD`
