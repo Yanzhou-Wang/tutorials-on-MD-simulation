@@ -101,10 +101,15 @@ Output style (same as your original):
 
 # I. Post-analysis of `GPUMD` outputs
 
-## II. `plot-thermo.out`
+## II. `plot-thermo.out` for `GPUMD`
 
 - Plot general quanties that `thermo.out` contains versus generation time, including temperature T(t), potential energy U(t), pressure P(GPa), and lattice parameter curves. 
 
+
+## II. Compute and plot basic structure properties: coordination number, radial distribution function, bond length function, angular distribution function for `GPUMD`
+
+- `260410-1_result-restart.xyz_NPC1.2-aC3.2`:  The directory contains a few produced structure samples named as "restart.xyz"
+- `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1`: The directory contains some well-defined computing and plotting scripts and plotted figures for the calculations of CN, RDF, ADF and BLD.
 
 
 
