@@ -9,7 +9,8 @@
     - [III. structureFormat_cif2vasp.py](#iii-structureformat_cif2vasppy)
 
 - [I. Post-analysis of GPUMD outputs](#i-post-analysis-of-gpumd-outputs)
-  - [II. plot-thermo.out](#ii-plot-thermoout)
+  - [II. plot-thermo.out vs. time for GPUMD](#ii-plot-thermoout-vs-time-for-gpumd)
+  - [II. Compute and plot basic structure properties: coordination number, radial distribution function, bond length function, angular distribution function for GPUMD](#ii-compute-and-plot-basic-structure-properties-coordination-number-radial-distribution-function-bond-length-function-angular-distribution-function-for-gpumd)
 
 - [I. VASP relaxes cell to get lattice parameter](#i-vasp-relaxes-cell-to-get-lattice-parameter)
 
@@ -23,6 +24,8 @@
   - [II. NVE AIMD](#ii-nve-aimd)
   - [II. NVT AIMD](#ii-nvt-aimd)
   - [II. velocity-rescaling MD](#ii-velocity-rescaling-md)
+
+
 
 
 # I. Dataset generation and nep plots
