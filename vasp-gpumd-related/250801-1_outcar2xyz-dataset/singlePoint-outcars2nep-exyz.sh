@@ -11,10 +11,10 @@ viri_logi=1     # Logical value for virial, true=1, false=0
 #--------------------------------------------------------------------------------------------
 read_dire=$1
 if [ -z $read_dire ]; then
-        echo "Your syntax is illegal, please try again"
+    echo "Sugggested legal usage like: ./script ./OUTCARs, please try again"
         exit
 fi
-writ_dire="NEPdataset"; writ_file="NEP-dataset.xyz";
+writ_dire="dataset-singlePoint"; writ_file="NEP-dataset.xyz";
 rm -rf $writ_dire; mkdir $writ_dire
 
 N_case=$(find -L $read_dire -name "OUTCAR" | wc -l)
@@ -47,5 +47,6 @@ do
              N_count=$((N_count + 1))
 done
 echo
-dos2unix $writ_dire/$writ_file
+dos2unix -q $writ_dire/$writ_file
 
+echo ">>>>>> $writ_dire/$writ_file generated <<<<<<<<<<<<<<<"

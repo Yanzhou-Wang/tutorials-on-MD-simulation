@@ -13,12 +13,12 @@ viri_logi=1     # Logical value for virial, true=1, false=0
 #--------------------------------------------------------------------------------------------
 read_dire=$1
 if [ -z "$read_dire" ]; then
-        echo "Your syntax is illegal, please try again"
+        echo "Suggested legal usage like: ./script ./OUTCARS, please try again"
         exit 1
 fi
 
-writ_dire="NEPdataset-multiple_frames"
-writ_file="NEP-dataset.xyz"
+writ_dire="dataset-traj"
+writ_file="dataset.xyz"
 error_file="non_converged_files.txt"
 
 rm -rf "$writ_dire"
@@ -122,5 +122,5 @@ for file in "${converged_files[@]}"; do
 done
 
 echo -ne "\nConversion complete.\n"
-dos2unix "$writ_dire/$writ_file"
+dos2unix -q "$writ_dire/$writ_file"
 echo "All done."

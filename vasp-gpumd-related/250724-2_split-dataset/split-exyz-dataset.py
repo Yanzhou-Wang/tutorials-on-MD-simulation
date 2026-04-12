@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 python split_xyz.py --input dataset.xyz --test_ratio 0.1 --train_output train.xyz --test_output test.xyz
 """
