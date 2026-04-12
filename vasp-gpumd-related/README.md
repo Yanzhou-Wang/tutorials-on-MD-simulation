@@ -30,11 +30,11 @@
 
 # I. Dataset generation and nep plots
 
--  `250801-1_outcar2xyz-dataset`:  Extract neccessary physical quantities from OUTCARs and build up exyz dataset that NEP code can read.
+-  `260101-1_outcar2xyz-dataset`:  Extract neccessary physical quantities from OUTCARs and build up exyz dataset that NEP code can read.
 
-- `250724-2_split-dataset`:  Split single `dataset.xyz` into `train.xyz` and `test.xyz`
+- `260101-3_split-dataset`:  Split single `dataset.xyz` into `train.xyz` and `test.xyz`
 
-- ` 260408-1_plot-NEP-outptus`: plot NEP outputs, including `loss.out`, `energy_train.out`,  `force_train.out`,  `virial_train.out`, `energy_test.out` `force_test.out`, `virial_test.out`
+- `260101-5_trained-NEP_script-plottings`: plot NEP outputs, including `loss.out`, `energy_train.out`,  `force_train.out`,  `virial_train.out`, `energy_test.out` `force_test.out`, `virial_test.out`
 
 
 
