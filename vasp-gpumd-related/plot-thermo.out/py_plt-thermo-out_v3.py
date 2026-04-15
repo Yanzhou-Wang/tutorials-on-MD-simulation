@@ -27,6 +27,12 @@ model_file = 'model.xyz'
 # 1. 解析 run.in
 # ============================================================
 def parse_run_in(filename):
+    """
+    更稳健的模块划分方式：
+    - 从文件开头开始累计
+    - 每遇到一个 run，就把从上一个 run 之后到当前 run 的内容视为一个完整模块
+    - 不再以 ensemble 作为模块起点
+    """
     modules = []
 
     with open(filename, 'r') as f:
@@ -44,11 +50,7 @@ def parse_run_in(filename):
         tokens = line.split()
         key = tokens[0]
 
-        # 模块开始
         if key == 'ensemble':
-            if current:
-                modules.append(current)
-            current = {}
             current['ensemble'] = tokens[1:]
 
         elif key == 'time_step':
@@ -70,6 +72,12 @@ def parse_run_in(filename):
             modules.append(current)
             current = {}
 
+        else:
+            # 其他关键字不影响当前绘图脚本逻辑，直接忽略
+            pass
+
+    # 若最后还有残留但没有 run，直接忽略，不报错
+    # 因为它不构成完整的计算模块
     return modules
 
 
@@ -77,29 +85,46 @@ def parse_run_in(filename):
 # 2. 根据 modules 构造时间序列
 # ============================================================
 def build_time_array(modules):
+    """
+    健壮逻辑：
+    - 每个模块都累计真实运行时间
+    - 只有定义了 dump_thermo 的模块才会往 thermo.out 写数据点
+    - 因此只有这些模块才生成对应的时间点
+    """
     time_list = []
     t_accum = 0.0  # fs
 
     for m in modules:
-        dt = m['time_step']           # fs
-        dump = m['dump_thermo']
+        if 'time_step' not in m:
+            raise KeyError("模块缺少 time_step")
+        if 'run' not in m:
+            raise KeyError("模块缺少 run")
+
+        dt = m['time_step']   # fs
         run = m['run']
 
-        # 输出点数量（整数部分）
-        n_points = run // dump
+        # 只有定义了 dump_thermo 的模块才会写 thermo.out
+        if 'dump_thermo' in m:
+            dump = m['dump_thermo']
 
-        # 每个点之间的时间间隔
-        dt_dump = dump * dt  # fs
+            if dump <= 0:
+                raise ValueError(f"非法 dump_thermo = {dump}，必须为正整数")
 
-        for k in range(1, n_points + 1):
-            t = t_accum + k * dt_dump
-            time_list.append(t)
+            # 输出点数量（整数部分）
+            n_points = run // dump
 
-        # 更新时间累计（整个模块的真实时间）
+            # 每个 thermo 输出点对应的时间
+            dt_dump = dump * dt  # fs
+
+            for k in range(1, n_points + 1):
+                t = t_accum + k * dt_dump
+                time_list.append(t)
+
+        # 无论是否有 dump_thermo，都要累计真实时间
         t_accum += run * dt
 
     # 转换为 ps
-    time_array = np.array(time_list) / 1000.0
+    time_array = np.array(time_list, dtype=float) / 1000.0
     return time_array
 
 
@@ -140,6 +165,8 @@ def main():
         raise FileNotFoundError("thermo.out 不存在")
 
     thermo = np.loadtxt(thermo_file)
+    thermo = np.atleast_2d(thermo)
+
     T = thermo[:, 0]
     U_total = thermo[:, 2]
 
@@ -204,13 +231,11 @@ def main():
     plt.xticks(fontsize=fs-3)
     plt.yticks(fontsize=fs-3)
 
-    # plt.grid(True)
     plt.tight_layout()
 
     plt.savefig('fig_temperature_vs_time.png', dpi=200)
     print('fig_temperature_vs_time.png saved ...')
-    # plt.show()
-    # plt.close()
+    #plt.close()
 
     # ---------- 绘制势能 ----------
     plt.figure(figsize=(8, 6))
@@ -222,13 +247,11 @@ def main():
     plt.xticks(fontsize=fs-3)
     plt.yticks(fontsize=fs-3)
 
-    # plt.grid(True)
     plt.tight_layout()
 
     plt.savefig('fig_potential_energy_vs_time.png', dpi=200)
     print('fig_potential_energy_vs_time.png saved ...')
-    # plt.show()
-    # plt.close()
+    #plt.close()
 
     # ---------- 绘制压强分量 ----------
     plt.figure(figsize=(8, 6))
@@ -246,13 +269,11 @@ def main():
     plt.yticks(fontsize=fs-3)
     plt.legend(fontsize=fs-4)
 
-    # plt.grid(True)
     plt.tight_layout()
 
     plt.savefig('fig_pressure_vs_time.png', dpi=200)
     print('fig_pressure_vs_time.png saved ...')
-    # plt.show()
-    # plt.close()
+    #plt.close()
 
     # ---------- 绘制晶格常数 ----------
     plt.figure(figsize=(8, 6))
@@ -267,15 +288,14 @@ def main():
     plt.yticks(fontsize=fs-3)
     plt.legend(fontsize=fs-4)
 
-    # plt.grid(True)
     plt.tight_layout()
 
     plt.savefig('fig_lattice_vs_time.png', dpi=200)
     print('fig_lattice_vs_time.png saved ...')
-    # plt.show()
-    # plt.close()
+    #plt.close()
 
 
 # ============================================================
 if __name__ == "__main__":
     main()
+    
