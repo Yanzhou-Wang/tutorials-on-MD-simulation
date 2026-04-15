@@ -14,13 +14,15 @@ run 		1
 ```
 
 
-# I. sbatch script
 
-/data/home/wangyanzhou/code_inst/GPUMD-4.8_260214/src/gpumd
+# I. `sbatch` script
 
-## II. GPU-based gpumd job
+## II. DONG-FANG-HPC: GPU-based gpumd job
 
 ```
+#!/bin/bash
+code="/data/home/wangyanzhou/code_inst/GPUMD-4.8_260214/src/gpumd"
+
 cat > submit-gpumd-job.sbatch <<!
 #!/bin/sh
 #SBATCH -N 1                    #1个节点
