@@ -48,7 +48,7 @@
 
 ## II. Structure format conversion
 
-### III. `structureFormat_vasp2exyz-v3.py`
+### III. `./structureFormat_vasp2exyz-v3.py`
 
 结构转化+超胞, 该脚本使用起来非常灵活，支持的用法：
 
@@ -71,7 +71,7 @@
 
 
 
-### III. `structureFormat_cif2vasp.py`
+### III. `./structureFormat_cif2vasp.py`
 
 Usage:
 
