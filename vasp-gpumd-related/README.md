@@ -106,6 +106,12 @@ Output style (same as your original):
 
 ## II. `plot-thermo.out` vs. time for `GPUMD`
 
+
+| x|y|
+|--|--|
+|xxx|yyy|
+
+./plot-thermo.out/py_plt-thermo-out_v4.py
 - Plot general quanties  versus production time in `thermo.out`, including temperature T(t), potential energy U(t), pressure P(GPa), and lattice parameter curves. 
 
 
