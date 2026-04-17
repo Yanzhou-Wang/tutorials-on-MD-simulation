@@ -28,7 +28,7 @@ cat > submit-gpumd-job.sbatch <<!
 #SBATCH -N 1                    #1个节点
 #SBATCH -n 1            #1个task. 在调用v100卡时，一个task默认分配3个cores
 #SBATCH --ntasks-per-node=1     
-#SBATCH --partition=v100
+#SBATCH --partition=v100      #v100/v100g32
 #SBATCH --gres=gpu:1
 #SBATCH --output=%j.out
 #SBATCH --error=%j.err
