@@ -161,7 +161,7 @@ Output style (same as your original):
 
 ### III. 绘图`shc.out` 
 
--  `plot-kappa.out-shc.out/py11_plt-Kt-kw_all-single-cycle_fr-shc.out.py`, 绘图每个算例每一次的`$K(t)$`, `$k(\omega)$`
+-  `plot-kappa.out-shc.out/py11_plt-Kt-kw_all-single-cycle_fr-shc.out.py`, 绘图每个算例每一次的$K(t)$, `$k(\omega)$`
 -  `plot-kappa.out-shc.out/py12_plt-kw_all-averaged-n-cycle_fr-shc.out.py`, 绘图每个算例多次平均的`$k(\omega)$`
 -  `plot-kappa.out-shc.out/py13_plt-kw-kwq_all-averaged-n-cycle_fr-shc.out.py`, 绘图多次平均的有量子校正的`$k(\omega)^q$`
 
