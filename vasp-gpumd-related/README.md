@@ -14,7 +14,7 @@
 
 - [I. VASP relaxes cell to get lattice parameter](#i-vasp-relaxes-cell-to-get-lattice-parameter)
 
-- [I. VASP IBRION=6 computes elastic constants](#i-vasp-ibrion-6-computes-elastic-constants)
+- [I. VASP IBRION=6 computes elastic constants](#i-vasp-ibrion6-computes-elastic-constants)
 
 - [I. VASP/GPUMD computes EOS](#i-vaspgpumd-computes-eos)
 
