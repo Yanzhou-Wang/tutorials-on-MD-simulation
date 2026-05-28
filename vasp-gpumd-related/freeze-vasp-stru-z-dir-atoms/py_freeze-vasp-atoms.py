@@ -13,8 +13,11 @@ atoms = read(rf, format='vasp')
 z_cut = 2.5  # Å
 
 # mask=True 的原子会被固定（F F F）
-mask_fixed = [(atom.symbol == 'Cu' and atom.position[2] < z_cut)
+#mask_fixed = [(atom.symbol == 'Cu' and atom.position[2] < z_cut)
+#              for atom in atoms]
+mask_fixed = [(atom.position[2] < z_cut)
               for atom in atoms]
+
 
 n_frozen = int(np.sum(mask_fixed))
 
