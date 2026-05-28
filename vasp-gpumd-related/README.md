@@ -27,6 +27,8 @@
 
 
 
+$E=mc^2$
+
 # I. VASP dataset generation and trained nep plots
 
 -  `260101-1_outcar2xyz-dataset`:  Extract neccessary physical quantities from OUTCARs and build up exyz dataset that NEP code can read.
