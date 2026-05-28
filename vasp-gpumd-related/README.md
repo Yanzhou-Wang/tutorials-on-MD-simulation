@@ -1,4 +1,3 @@
-# TOC
 
 - [I. Dataset generation and nep plots](#i-dataset-generation-and-nep-plots)
 
