@@ -114,9 +114,9 @@ Output style (same as your original):
 
 ## II. VASP-pre/ing/pos
 
-### III. 固定POSCAR文件中z坐标方向的某些原子
+### III. 固定`POSCAR`文件中`z`方向坐标小于某个值的原子
 
-- 固定POSCAR文件中z坐标方向的某些原子： `freeze-vasp-stru-z-dir-atoms/py_freeze-vasp-atoms.py`
+- 固定`POSCAR`文件中`z`方向坐标小于某个值的原子： `freeze-vasp-stru-z-dir-atoms/py_freeze-vasp-atoms.py`
 
 
 ### III. 由`KSPACING=0.2`和`POSCAR`生成`KPOINTS`文件
@@ -125,13 +125,14 @@ Output style (same as your original):
 
 ### III. `launch-vasp-job.sh` 提交`vasp`作业
 
-- 提交`vasp`作业： `./launch-vasp-job.sh`, .`/si-launch-vasp-job.md`
+- 提交`vasp`作业： `./launch-vasp-job.sh`
+- 支撑内容： `./si-launch-vasp-job.md`
 
 ### III. 绘图原子受力，应力随离子步变化曲线
 
 - 查看离子优化/盒子优化的力，应力随步数收敛： `plot-force-stress-gforce-converg-vs-ionic-step_fr-vasprunxml/py_plot-vasprun.xml_force-stress-gforce-converg-vs-ionic-step_v3.py`
 
-#### III. 找到晶胞结构的空间群，晶系，结构类型
+### III. 找到晶胞结构的空间群，晶系，结构类型
 
 - 找到晶胞结构的空间群，晶系，结构类型： `260224-1u4_identify-table_space-group_crystal-system_stru-type/py_identify_space-group_crystal-system_stru-type_v3.py`
 
@@ -188,7 +189,6 @@ Output style (same as your original):
     获取对应的`prim.vasp`, `conv.vasp`, `orth.vasp`等
 3. `jobid=260224-2_IBRION6-elastic-constants_Li_ksp0.1_fr260224-1u2`, 对优化好的`conv.vasp`晶胞，执行`IBRION=6`的弹性常数计算. 要使弹性常数计算作业不报错，要把`INCAR`里的`KSPACING`参数替换成`KPOINTS`, 完成这一任务的脚本程序`gen_kpoints_from_kspacing.py`放在了`generate-KPOINTS-fr-kspacing-POSCAR`目录里.
 4. `jobid=260224-3u1_table-elastic-constant_Li_fr260224-2`, 从`OUTCAR`中提取弹性常数信息
-
 
 
 
