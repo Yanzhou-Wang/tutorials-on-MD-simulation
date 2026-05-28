@@ -14,7 +14,7 @@
 
 - [I. VASP relaxes cell to get lattice parameter](#i-vasp-relaxes-cell-to-get-lattice-parameter)
 
-- [I. VASP IBRION=-6 computes elastic constants](#i-vasp-ibrion-6-computes-elastic-constants)
+- [I. VASP IBRION=6 computes elastic constants](#i-vasp-ibrion-6-computes-elastic-constants)
 
 - [I. VASP/GPUMD computes EOS](#i-vaspgpumd-computes-eos)
 
@@ -131,7 +131,7 @@ Output style (same as your original):
 
 
 
-# I. `VASP` `IBRION=-6` computes elastic constants
+# I. `VASP` `IBRION=6` computes elastic constants
 
 - Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) IBRION=6计算优化后晶胞的弹性常数 --> 4) 脚本程序提取弹性常数:
 1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞
