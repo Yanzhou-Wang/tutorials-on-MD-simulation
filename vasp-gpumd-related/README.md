@@ -152,7 +152,7 @@ Output style (same as your original):
 
 ### III. 绘图`thermo.out`
 
-- 绘图`thermo.out`: `thermo.out/py_plt-thermo-out_v4.py`. The script plots thermal quanties versus production time in `thermo.out`, including temperature T(t), potential energy U(t), pressure P(t), and lattice parameter curves.
+- 绘图`thermo.out`: `thermo.out/py_plt-thermo-out_v4.py`. The script plots thermal quanties versus production time in `thermo.out`, including temperature $T(t)$, potential energy $U(t)$, pressure $P(t)$, and lattice parameter curves.
 
 ### III. 绘图`kappa.out`
 
@@ -164,7 +164,7 @@ Output style (same as your original):
 
 -  `plot-kappa.out-shc.out/py11_plt-Kt-kw_all-single-cycle_fr-shc.out.py`, 绘图每个算例每一次的 $K(t)$, $k(\omega)$
 
--  `plot-kappa.out-shc.out/py12_plt-kw_all-averaged-n-cycle_fr-shc.out.py`, 绘图每个算例多次平均的$k(\omega)$
+-  `plot-kappa.out-shc.out/py12_plt-kw_all-averaged-n-cycle_fr-shc.out.py`, 绘图每个算例多次平均的 $k(\omega)$
 -  `plot-kappa.out-shc.out/py13_plt-kw-kwq_all-averaged-n-cycle_fr-shc.out.py`, 绘图多次平均的有量子校正的 $k(\omega)^q$
 
 
