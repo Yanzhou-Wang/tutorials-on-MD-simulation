@@ -137,7 +137,7 @@ Output style (same as your original):
 1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞
 2. `jobid=260224-1u2_identify-prim-conv-orth_Li_fr260224-1`, 使用`py_identify-vasp-stru_2_prim-conv-orth.py` identify 优化后的`CONTCAR`, 以
     获取对应的`prim.vasp`, `conv.vasp`, `orth.vasp`等
-3. `jobid=260224-2_IBRION6-elastic-constants_Li_ksp0.1_fr260224-1u2`, 对优化好的`conv.vasp`晶胞，执行`IBRION=6`的弹性常数计算. 保险不报错的的弹性常数计算，要把`INCAR`里的`KSPACING`参数替换成`KPOINTS`, 完成这一任务的脚本程序`gen_kpoints_from_kspacing.py`放在了`generate-KPOINTS-fr-kspacing-POSCAR`目录里.
+3. `jobid=260224-2_IBRION6-elastic-constants_Li_ksp0.1_fr260224-1u2`, 对优化好的`conv.vasp`晶胞，执行`IBRION=6`的弹性常数计算. 要使弹性常数计算作业不报错，要把`INCAR`里的`KSPACING`参数替换成`KPOINTS`, 完成这一任务的脚本程序`gen_kpoints_from_kspacing.py`放在了`generate-KPOINTS-fr-kspacing-POSCAR`目录里.
 4. `jobid=260224-3u1_table-elastic-constant_Li_fr260224-2`, 从`OUTCAR`中提取弹性常数信息
 
 
