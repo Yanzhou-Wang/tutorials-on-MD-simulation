@@ -2,10 +2,6 @@
 
 - [I. VASP dataset generation and trained nep plots](#i-vasp-dataset-generation-and-trained-nep-plots)
 
-# TOC
-
-- [I. VASP dataset generation and trained nep plots](#i-vasp-dataset-generation-and-trained-nep-plots)
-
 - [I. Pre/ing/pos-process for GPUMD/VASP](#i-preingpos-process-for-gpumdvasp)
   - [II. Structure format conversion](#ii-structure-format-conversion)
     - [III. structure-format-conversion/structureFormat_vasp2exyz_v3.py](#iii-structure-format-conversionstructureformat_vasp2exyz_v3py)
