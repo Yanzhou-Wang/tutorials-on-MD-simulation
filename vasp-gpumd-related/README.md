@@ -159,7 +159,7 @@ Output style (same as your original):
 - 计算rdf: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py1-1_ovito-compute-rdf_v3.py`
 - 绘图rdf: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py2-1_plt-rdf_v3.py`
 - 计算bld, adf: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py1-3_ovito-compute-bld-adf_v3.py `
-- 绘图bld: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py2-3_plt-bld-adf_v3.py`
+- 绘图bld, adf: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py2-3_plt-bld-adf_v3.py`
 - 计算cn: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py1-2_ovito-compute-cn_v3.py`
 - 绘图cn: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py2-2_bar-plt-cn_v3.py`
 
