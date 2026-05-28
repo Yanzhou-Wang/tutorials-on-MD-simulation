@@ -116,16 +116,16 @@ Output style (same as your original):
 
 - 固定z方向的某些原子： `freeze-vasp-stru-z-dir-atoms/py_freeze-vasp-atoms.py`
 - 由`KSPACING=0.2`和`POSCAR`生成`KPOINTS`文件：  `generate-KPOINTS-fr-kspacing-POSCAR/gen_kpoints_from_kspacing.py`
-- 提交vasp作业： `./launch-vasp-job.sh`, .`/si-launch-vasp-job.md`
+- 提交`vasp`作业： `./launch-vasp-job.sh`, .`/si-launch-vasp-job.md`
 - 查看离子优化/盒子优化的力，应力随步数收敛： `plot-force-stress-gforce-converg-vs-ionic-step_fr-vasprunxml/py_plot-vasprun.xml_force-stress-gforce-converg-vs-ionic-step_v3.py`
 
 
 ## II. GPUMD-pre/ing/pos
 - 建模金刚石： `260410-0u1_create-model.xyz_diamond-vary-density/py_create-C-diamond-by-density.py`. Create crystal diamond varying densities, and varying supercell sizes
-- 提交gpumd作业： `./launch-gpumd-job.sh`, `./si-launch-gpumd-job.md`
+- 提交`gpumd`作业： `./launch-gpumd-job.sh`, `./si-launch-gpumd-job.md`
 - 绘图`thermo.out`: `thermo.out/py_plt-thermo-out_v4.py`. The script plots thermal quanties versus production time in `thermo.out`, including temperature T(t), potential energy U(t), pressure P(t), and lattice parameter curves.
--  绘图kappa.out：`plot-kappa.out-shc.out/py01_plt-kappa-vs-t_all-single-cycle-_fr-kappa.out_v1.py`, `plot-kappa.out-shc.out/py02_plt-kappa-vs-t_all-averaged-n-cycle_fr-kappa.out_v1.py`
--  绘图shc.out的Kt,kw,kwq: `plot-kappa.out-shc.out/py11_plt-Kt-kw_all-single-cycle_fr-shc.out.py`, `plot-kappa.out-shc.out/py12_plt-kw_all-averaged-n-cycle_fr-shc.out.py`, `plot-kappa.out-shc.out/py13_plt-kw-kwq_all-averaged-n-cycle_fr-shc.out.py`
+-  绘图`kappa.out`：`plot-kappa.out-shc.out/py01_plt-kappa-vs-t_all-single-cycle-_fr-kappa.out_v1.py`, `plot-kappa.out-shc.out/py02_plt-kappa-vs-t_all-averaged-n-cycle_fr-kappa.out_v1.py`
+-  绘图`shc.out`的`Kt`,`kw`,`kwq`: `plot-kappa.out-shc.out/py11_plt-Kt-kw_all-single-cycle_fr-shc.out.py`, `plot-kappa.out-shc.out/py12_plt-kw_all-averaged-n-cycle_fr-shc.out.py`, `plot-kappa.out-shc.out/py13_plt-kw-kwq_all-averaged-n-cycle_fr-shc.out.py`
 
 
 
