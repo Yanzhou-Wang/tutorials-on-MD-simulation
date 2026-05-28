@@ -1,0 +1,3 @@
+Structure-name   Space-group  Crystal-system  Structure-type
+---------------  -----------  --------------  --------------
+id-mp-604313_Li  P2_13 (198)  cubic           unknown       

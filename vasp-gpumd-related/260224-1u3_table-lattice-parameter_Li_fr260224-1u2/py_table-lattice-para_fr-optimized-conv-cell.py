@@ -6,12 +6,15 @@ import numpy as np
 # 主目录（相对当前脚本运行位置）
 main_path = "../260224-1u2_identify-prim-conv-orth_Li_fr260224-1"
 
-# 需要处理的算例目录（与 main_path 拼接）
+# 用户需要处理的算例目录（这个要用于与main_path的拼接）
 job_items = [
     "id-mp-604313_Li",
 ]
 
-# 输出文件名
+# 用户指定输入结构文件名（一定要是晶胞！！！）
+in_file = "conv.vasp" 
+
+# 用户指定输出文件名
 out_file = "result-lattice-para.txt"
 # =======================================================================
 
@@ -56,7 +59,7 @@ def main():
     results = []
 
     for job in job_items:
-        conv_path = os.path.join(main_path, job, "conv.vasp")
+        conv_path = os.path.join(main_path, job, in_file)
         if not os.path.isfile(conv_path):
             print(f"[WARN] 未找到文件: {conv_path}，跳过该算例。")
             continue
