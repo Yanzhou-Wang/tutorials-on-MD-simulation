@@ -1,29 +1,29 @@
 # TOC
-- [I. Dataset generation and nep plots](#i-dataset-generation-and-nep-plots)
 
-- [I. Pre-process for GPUMD/VASP](#i-pre-process-for-gpumdvasp)
-  - [II. model.xyz creation](#ii-modelxyz-creation)
+- [I. VASP dataset generation and trained nep plots](#i-vasp-dataset-generation-and-trained-nep-plots)
+
+- [I. Pre/ing/pos-process for GPUMD/VASP](#i-preingpos-process-for-gpumdvasp)
   - [II. Structure format conversion](#ii-structure-format-conversion)
-    - [III. structureFormat_vasp2exyz-v3.py](#iii-structureformat_vasp2exyz-v3py)
-    - [III. structureFormat_cif2vasp.py](#iii-structureformat_cif2vasppy)
+    - [III. structure-format-conversion/structureFormat_vasp2exyz_v3.py](#iii-structure-format-conversionstructureformat_vasp2exyz_v3py)
+    - [III. structure-format-conversion/structureFormat_exyz2vasp_v3.py](#iii-structure-format-conversionstructureformat_exyz2vasp_v3py)
+    - [III. structure-format-conversion/structureFormat_cif2vasp_v3.py](#iii-structure-format-conversionstructureformat_cif2vasp_v3py)
+  - [II. VASP-pre/ing/pos](#ii-vasp-preingpos)
+  - [II. GPUMD-pre/ing/pos](#ii-gpumd-preingpos)
 
-- [I. Post-analysis of GPUMD outputs](#i-post-analysis-of-gpumd-outputs)
-  - [II. plot-thermo.out vs. time for GPUMD](#ii-plot-thermoout-vs-time-for-gpumd)
-  - [II. Compute and plot basic structure properties: coordination number, radial distribution function, bond length function, angular distribution function for GPUMD](#ii-compute-and-plot-basic-structure-properties-coordination-number-radial-distribution-function-bond-length-function-angular-distribution-function-for-gpumd)
+- [I. exe: VASP relaxes cell to get lattice parameter](#i-exe-vasp-relaxes-cell-to-get-lattice-parameter)
 
-- [I. VASP relaxes cell to get lattice parameter](#i-vasp-relaxes-cell-to-get-lattice-parameter)
+- [I. exe: VASP IBRION=6 computes elastic constants](#i-exe-vasp-ibrion6-computes-elastic-constants)
 
-- [I. VASP IBRION=6 computes elastic constants](#i-vasp-ibrion6-computes-elastic-constants)
+- [I. exe: OVITO computes and plot basic structure properties: coordination number, radial distribution function, bond length function, angular distribution function from restart.xyz](#i-exe-ovito-computes-and-plot-basic-structure-properties-coordination-number-radial-distribution-function-bond-length-function-angular-distribution-function-from-restartxyz)
 
-- [I. VASP/GPUMD computes EOS](#i-vaspgpumd-computes-eos)
+- [I. exe: VASP/GPUMD computes EOS](#i-exe-vaspgpumd-computes-eos)
 
-- [I. VASP/GPUMD computes uniaxial deformation: potential energy vs. strain](#i-vaspgpumd-computes-uniaxial-deformation-potential-energy-vs-strain)
+- [I. exe: VASP/GPUMD computes uniaxial deformation: potential energy vs. strain](#i-exe-vaspgpumd-computes-uniaxial-deformation-potential-energy-vs-strain)
 
-- [I. VASP-AIMD](#i-vasp-aimd)
+- [I. VASP-AIMD (待处理)](#i-vasp-aimd-待处理)
   - [II. NVE AIMD](#ii-nve-aimd)
   - [II. NVT AIMD](#ii-nvt-aimd)
   - [II. velocity-rescaling MD](#ii-velocity-rescaling-md)
-
 
 
 
