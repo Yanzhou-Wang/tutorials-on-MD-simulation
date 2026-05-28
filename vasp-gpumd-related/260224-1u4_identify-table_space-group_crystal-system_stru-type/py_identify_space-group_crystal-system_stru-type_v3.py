@@ -43,8 +43,8 @@ in_file = "conv.vasp"
 out_file = "result-structure-symmetry.txt"
 
 # 对称性判断参数
-symprec = 1e-3
-angle_tolerance = 5.0
+symprec = 1e-2     #pymatgen default
+angle_tolerance = 5.0  #pymatgen default
 # =======================================================================
 
 
