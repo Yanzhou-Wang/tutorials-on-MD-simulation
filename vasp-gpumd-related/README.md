@@ -2,13 +2,29 @@
 
 - [I. VASP dataset generation and trained nep plots](#i-vasp-dataset-generation-and-trained-nep-plots)
 
+# TOC
+
+- [I. VASP dataset generation and trained nep plots](#i-vasp-dataset-generation-and-trained-nep-plots)
+
 - [I. Pre/ing/pos-process for GPUMD/VASP](#i-preingpos-process-for-gpumdvasp)
   - [II. Structure format conversion](#ii-structure-format-conversion)
     - [III. structure-format-conversion/structureFormat_vasp2exyz_v3.py](#iii-structure-format-conversionstructureformat_vasp2exyz_v3py)
     - [III. structure-format-conversion/structureFormat_exyz2vasp_v3.py](#iii-structure-format-conversionstructureformat_exyz2vasp_v3py)
     - [III. structure-format-conversion/structureFormat_cif2vasp_v3.py](#iii-structure-format-conversionstructureformat_cif2vasp_v3py)
+
   - [II. VASP-pre/ing/pos](#ii-vasp-preingpos)
+    - [III. 固定POSCAR文件中z方向坐标小于某个值的原子](#iii-固定poscar文件中z方向坐标小于某个值的原子)
+    - [III. 由KSPACING=0.2和POSCAR生成KPOINTS文件](#iii-由kspacing02和poscar生成kpoints文件)
+    - [III. launch-vasp-job.sh 提交vasp作业](#iii-launch-vasp-jobsh-提交vasp作业)
+    - [III. 绘图原子受力，应力随离子步变化曲线](#iii-绘图原子受力应力随离子步变化曲线)
+    - [III. 找到晶胞结构的空间群，晶系，结构类型](#iii-找到晶胞结构的空间群晶系结构类型)
+
   - [II. GPUMD-pre/ing/pos](#ii-gpumd-preingpos)
+    - [III. 结构model.xyz建模](#iii-结构modelxyz建模)
+    - [III. launch-gpumd-job.sh提交作业](#iii-launch-gpumd-jobsh提交作业)
+    - [III. 绘图thermo.out](#iii-绘图thermoout)
+    - [III. 绘图kappa.out](#iii-绘图kappaout)
+    - [III. 绘图shc.out](#iii-绘图shcout)
 
 - [I. exe: VASP relaxes cell to get lattice parameter](#i-exe-vasp-relaxes-cell-to-get-lattice-parameter)
 
@@ -24,7 +40,6 @@
   - [II. NVE AIMD](#ii-nve-aimd)
   - [II. NVT AIMD](#ii-nvt-aimd)
   - [II. velocity-rescaling MD](#ii-velocity-rescaling-md)
-
 
 
 
