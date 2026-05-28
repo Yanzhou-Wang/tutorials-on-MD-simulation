@@ -28,7 +28,7 @@
 
 
 
-# I. Dataset generation and nep plots
+# I. VASP dataset generation and trained nep plots
 
 -  `260101-1_outcar2xyz-dataset`:  Extract neccessary physical quantities from OUTCARs and build up exyz dataset that NEP code can read.
 
@@ -38,17 +38,11 @@
 
 
 
-# I. Pre-process for `GPUMD`/`VASP`
-
-## II. `model.xyz` creation
-
-- `create-C-diamond-by-density`: Create crystal diamond varying densities, and varying supercell sizes
-
-
+# I. Pre/ing/pos-process for `GPUMD`/`VASP`
 
 ## II. Structure format conversion
 
-### III. `./structureFormat_vasp2exyz-v3.py`
+### III. `structure-format-conversion/structureFormat_vasp2exyz_v3.py`
 
 结构转化+超胞, 该脚本使用起来非常灵活，支持的用法：
 
@@ -71,7 +65,26 @@
 
 
 
-### III. `./structureFormat_cif2vasp.py`
+
+### III. `structure-format-conversion/structureFormat_vasp2exyz_v3.py`
+
+  1) 当前目录递归查找：
+     递归寻找 *.xyz, *.exyz, *.extxyz 文件，
+     将其中每一个结构帧分别转换为一个 .vasp 文件，
+     输出到对应源目录下：
+     ./structureFormat_exyz2vasp.py
+
+  2) 指定一个路径（目录或单文件）：
+     ./structureFormat_exyz2vasp.py path/to/dir
+     ./structureFormat_exyz2vasp.py path/to/file.xyz
+
+  3) 指定源路径 + 目标目录：
+     ./structureFormat_exyz2vasp.py path/to/src path/to/dst
+  4) It can also handle a dataset that includes many exyz frames
+      ./structureFormat_exyz2vasp.py ./dataset.xyz ./DIR
+
+
+### III. `structure-format-conversion/structureFormat_cif2vasp_v3.py`
 
 Usage:
 
@@ -99,28 +112,26 @@ Output style (same as your original):
 
 
 
+## II. VASP-pre/ing/pos
+
+- 固定z方向的某些原子： `freeze-vasp-stru-z-dir-atoms/py_freeze-vasp-atoms.py`
+- 由`KSPACING=0.2`和`POSCAR`生成`KPOINTS`文件：  `generate-KPOINTS-fr-kspacing-POSCAR/gen_kpoints_from_kspacing.py`
+- 提交vasp作业： `./launch-vasp-job.sh`, .`/si-launch-vasp-job.md`
+- 查看离子优化/盒子优化的力，应力随步数收敛： `plot-force-stress-gforce-converg-vs-ionic-step_fr-vasprunxml/py_plot-vasprun.xml_force-stress-gforce-converg-vs-ionic-step_v3.py`
 
 
-
-# I. Post-analysis of `GPUMD` outputs
-
-## II. `plot-thermo.out` vs. time for `GPUMD`
-
-- `thermo.out/py_plt-thermo-out_v4.py`: The script plots thermal quanties versus production time in `thermo.out`, including temperature T(t), potential energy U(t), pressure P(t), and lattice parameter curves. 
-
-
-
-
-## II. Compute and plot basic structure properties: coordination number, radial distribution function, bond length function, angular distribution function for `GPUMD`
-
-- `260410-1_result-restart.xyz_NPC1.2-aC3.2`:  The directory contains a few produced structure samples named as "restart.xyz"
-- `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1`: The directory contains some well-defined computing and plotting scripts and plotted figures for the calculations of CN, RDF, ADF and BLD.
-
+## II. GPUMD-pre/ing/pos
+- 建模金刚石： `260410-0u1_create-model.xyz_diamond-vary-density/py_create-C-diamond-by-density.py`. Create crystal diamond varying densities, and varying supercell sizes
+- 提交gpumd作业： `./launch-gpumd-job.sh`, `./si-launch-gpumd-job.md`
+- 绘图`thermo.out`: `thermo.out/py_plt-thermo-out_v4.py`. The script plots thermal quanties versus production time in `thermo.out`, including temperature T(t), potential energy U(t), pressure P(t), and lattice parameter curves.
+-  绘图kappa.out：`plot-kappa.out-shc.out/py01_plt-kappa-vs-t_all-single-cycle-_fr-kappa.out_v1.py`, `plot-kappa.out-shc.out/py02_plt-kappa-vs-t_all-averaged-n-cycle_fr-kappa.out_v1.py`
+-  绘图shc.out的Kt,kw,kwq: `plot-kappa.out-shc.out/py11_plt-Kt-kw_all-single-cycle_fr-shc.out.py`, `plot-kappa.out-shc.out/py12_plt-kw_all-averaged-n-cycle_fr-shc.out.py`, `plot-kappa.out-shc.out/py13_plt-kw-kwq_all-averaged-n-cycle_fr-shc.out.py`
 
 
 
 
-# I. `VASP` relaxes cell to get lattice parameter
+
+# I. exe: `VASP` relaxes cell to get lattice parameter
 
 - Workflow: 1) `VASP`优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) 使用脚本程序，提取并表格化晶格常数:
 1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞. 
@@ -129,9 +140,7 @@ Output style (same as your original):
 
 
 
-
-
-# I. `VASP` `IBRION=6` computes elastic constants
+# I. exe: `VASP` `IBRION=6` computes elastic constants
 
 - Workflow: 1) VASP优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) IBRION=6计算优化后晶胞的弹性常数 --> 4) 脚本程序提取弹性常数:
 1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞
@@ -142,7 +151,21 @@ Output style (same as your original):
 
 
 
-# I. `VASP`/`GPUMD` computes EOS
+
+
+
+
+# I. exe: `OVITO` computes and plot basic structure properties: coordination number, radial distribution function, bond length function, angular distribution function from `restart.xyz`
+
+- 计算rdf: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py1-1_ovito-compute-rdf_v3.py`
+- 绘图rdf: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py2-1_plt-rdf_v3.py`
+- 计算bld, adf: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py1-3_ovito-compute-bld-adf_v3.py `
+- 绘图bld: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py2-3_plt-bld-adf_v3.py`
+- 计算cn: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py1-2_ovito-compute-cn_v3.py`
+- 绘图cn: `260410-1u1_ovito-compute-plot_cn-rdf-adf_fr260410-1/py2-2_bar-plt-cn_v3.py`
+
+
+# I. exe: `VASP`/`GPUMD` computes EOS
 
 - Workflow: 1) `VASP`优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`conv.vasp` --> 3) 使用脚本程序生成三轴同比应变结构 --> 4) `VASP`/`NEP-GPUMD`单点计算 --> 5) 表格化数据并绘图
 1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞 
@@ -156,7 +179,7 @@ Output style (same as your original):
 
 
 
-# I. `VASP`/`GPUMD` computes uniaxial deformation: potential energy vs. strain
+# I. exe: `VASP`/`GPUMD` computes uniaxial deformation: potential energy vs. strain
 
 - Workflow: 1) `VASP`优化晶胞/原包 --> 2) 使用脚本程序格式化优化后的晶胞/原包得到`orth.vasp` --> 3) 使用脚本程序对称性分析并遍历非等价轴,生成单轴应变结构 --> 4) `VASP`/`NEP-GPUMD`单点计算 --> 5) 表格化数据并绘图
 1. `jobid=260224-1_IBRION1-optimize-Li`, `IBRION=2/1`优化原包或晶胞
@@ -170,7 +193,10 @@ Output style (same as your original):
 
 
 
-# I. `VASP-AIMD`
+
+
+
+# I. `VASP-AIMD` (待处理)
 
 ## II. NVE AIMD
 
