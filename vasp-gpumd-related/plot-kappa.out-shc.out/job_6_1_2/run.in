@@ -1,0 +1,18 @@
+potential   ../id_file/nep_0619_CH.txt
+
+velocity    300    
+
+#== compute thermol conductivity===========
+ensemble    nvt_bdp 300 300 100
+time_step   0.5
+dump_thermo     2000
+dump_exyz   400000 1 1
+run         400000
+
+ensemble nvt_bdp 300 300 100
+time_step 0.5
+compute_hnemd 1000 0 0 0.00015
+compute_shc   4 250 2 1000 400
+dump_thermo   2000
+dump_exyz     12000000 1 1
+run           12000000
