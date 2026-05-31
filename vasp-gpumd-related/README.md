@@ -147,7 +147,14 @@ Output style (same as your original):
 
 - 找到晶胞结构的空间群，晶系，结构类型： `260224-1u4_identify-table_space-group_crystal-system_stru-type/py_identify_space-group_crystal-system_stru-type_v3.py`
 
+### III. 删除VASP不必要的输出文件
 
+-  删除用户指定的输出文件： `./remove-unnecessary-vasp-outputs_v3.sh`
+
+### III. 过滤掉不健康的`VASP` jobs
+
+- 过滤掉异常VASP jobs: `./screen-out-abnormal-vasp-job-fr-ourcar_v3.sh`. 这里说的“异常”，指的是作业运行时出现意外而非正常终止
+- 过滤掉scf没有收敛的作业：`./screen-out-scf-not-converged-vasp-job_fr-outcar_v3.sh`. 这里包含两部分：第一，作业正常算完了，但是scf没有达到要求； 第二，作业压根就没正常算完，出现了意外报错而终止
 
 
 
