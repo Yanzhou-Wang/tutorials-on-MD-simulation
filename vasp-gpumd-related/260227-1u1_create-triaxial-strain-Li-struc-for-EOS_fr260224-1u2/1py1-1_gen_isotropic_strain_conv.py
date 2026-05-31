@@ -13,7 +13,7 @@ in_filename = "conv.vasp"
 
 strain_start = -0.05
 strain_end = 0.10
-strain_step = 0.01
+strain_step = 0.05
 
 # 需要处理的结构目录名前缀
 job_dir_prefix = "id-mp-"
