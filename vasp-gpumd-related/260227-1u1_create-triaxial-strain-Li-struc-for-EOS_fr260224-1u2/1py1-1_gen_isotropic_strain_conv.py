@@ -5,7 +5,7 @@ import shutil
 from pathlib import Path
 
 # === 用户可调部分 =======================================================
-read_comm_dir = Path("../260525-1u2_identify-prim-conv-orth_fr260525-1")
+read_comm_dir = Path("../260224-1u2_identify-prim-conv-orth_Li_fr260224-1")
 
 out_dir = Path("./")
 
