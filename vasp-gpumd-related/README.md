@@ -14,6 +14,8 @@
     - [III. launch-vasp-job.sh 提交vasp作业](#iii-launch-vasp-jobsh-提交vasp作业)
     - [III. 绘图原子受力，应力随离子步变化曲线](#iii-绘图原子受力应力随离子步变化曲线)
     - [III. 找到晶胞结构的空间群，晶系，结构类型](#iii-找到晶胞结构的空间群晶系结构类型)
+    - [III. 删除VASP不必要的输出文件](#iii-删除vasp不必要的输出文件)
+    - [III. 过滤掉不健康的VASP jobs](#iii-过滤掉不健康的vasp-jobs)
 
   - [II. GPUMD-pre/ing/pos](#ii-gpumd-preingpos)
     - [III. 结构model.xyz建模](#iii-结构modelxyz建模)
@@ -36,6 +38,10 @@
   - [II. NVE AIMD](#ii-nve-aimd)
   - [II. NVT AIMD](#ii-nvt-aimd)
   - [II. velocity-rescaling MD](#ii-velocity-rescaling-md)
+
+
+
+
 
 
 
