@@ -7,7 +7,7 @@
     - [III. structure-format-conversion/structureFormat_vasp2exyz_v3.py](#iii-structure-format-conversionstructureformat_vasp2exyz_v3py)
     - [III. structure-format-conversion/structureFormat_exyz2vasp_v3.py](#iii-structure-format-conversionstructureformat_exyz2vasp_v3py)
     - [III. structure-format-conversion/structureFormat_cif2vasp_v3.py](#iii-structure-format-conversionstructureformat_cif2vasp_v3py)
-
+  - [II. 整理的函数代码块： `si-code-function-block.md`](#ii-整理的函数代码块-si-code-function-block.md)
   - [II. VASP-pre/ing/pos](#ii-vasp-preingpos)
     - [III. 固定POSCAR文件中z方向坐标小于某个值的原子](#iii-固定poscar文件中z方向坐标小于某个值的原子)
     - [III. 由KSPACING=0.2和POSCAR生成KPOINTS文件](#iii-由kspacing02和poscar生成kpoints文件)
@@ -128,6 +128,10 @@ Output style (same as your original):
 1. `write(..., format="vasp", vasp5=True, direct=True, sort=False)`
 
 
+## II. 整理的函数代码块： `si-code-function-block.md`
+
+包含的功能模块有：
+1. 算例作业目录名解析： `parse_job_dirs`， 用来解析形如`job_str_x_y`或者`job_str_x_y_z`目录名。该函数的输入是common directory `$r_dir`, 输出返回值为`${is[i]}`,`${js[i]}`,`${ks[i]}` 
 
 ## II. VASP-pre/ing/pos
 
