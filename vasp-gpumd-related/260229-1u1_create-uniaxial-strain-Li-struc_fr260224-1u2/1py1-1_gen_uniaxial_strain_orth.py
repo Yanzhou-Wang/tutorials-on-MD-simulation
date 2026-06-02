@@ -24,17 +24,21 @@ Rules:
 from __future__ import annotations
 
 from pathlib import Path
-import shutil
 import numpy as np
 
 from ase.io import read, write
 
+
+# === 用户可调部分 =======================================================
 read_comm_dir = Path("../260224-1u2_identify-prim-conv-orth_Li_fr260224-1")
 out_dir = Path("./")
 
 in_filename = "orth.vasp"
 
-# strain range: -0.05, -0.04, ..., 0.10  (step=0.01)
+# 算例目录名前缀
+job_dir_prefix = "job_"
+
+# strain range: -0.05, -0.04, ..., 0.10
 strain_start = -0.05
 strain_end = 0.10
 strain_step = 0.05
@@ -42,6 +46,8 @@ strain_step = 0.05
 # tolerances requested by you
 tol_ortho = 1e-3   # for orthogonality check on dot products
 tol_len = 1e-3     # for equivalence check on lengths (Angstrom)
+# =======================================================================
+
 
 def strain_values():
     """Yield strain values with exact 0.01 steps using integer loop."""
@@ -125,6 +131,9 @@ def unique_axes_by_length(lengths: np.ndarray) -> list[int]:
     return [0, 1, 2]        # all different (or near-degenerate but not matching above)
 
 def axis_name(i: int) -> str:
+    return ["0", "1", "2"][i]
+
+def axis_label(i: int) -> str:
     return ["a", "b", "c"][i]
 
 def main():
@@ -137,8 +146,9 @@ def main():
     #    shutil.rmtree(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    subdirs = sorted([p for p in read_comm_dir.iterdir() if p.is_dir() and p.name.startswith("id-mp-")])
+    subdirs = sorted([p for p in read_comm_dir.iterdir() if p.is_dir() and p.name.startswith(job_dir_prefix)])
     print(f"[INFO] Found {len(subdirs)} structures under {read_comm_dir}")
+    print(f"[INFO] axis index: 0 -> a-axis, 1 -> b-axis, 2 -> c-axis")
     print(f"[INFO] tol_ortho={tol_ortho:g}, tol_len={tol_len:g}")
     print(f"[INFO] strain range: {strain_start:+.2f} .. {strain_end:+.2f} step {strain_step:.2f}")
 
@@ -185,7 +195,7 @@ def main():
         out_subdir = out_dir / sd.name
         out_subdir.mkdir(parents=True, exist_ok=True)
 
-        axes_str = ",".join(axis_name(i) for i in axes)
+        axes_str = ",".join(f"{axis_name(i)}({axis_label(i)})" for i in axes)
         print(f"[PROC] ({idx}/{len(subdirs)}) {sd.name} | lengths(a,b,c)={lengths[0]:.6f},"
               f"{lengths[1]:.6f},{lengths[2]:.6f} | axes={axes_str}")
 
@@ -206,7 +216,7 @@ def main():
                 out_path = out_subdir / out_name
                 write(str(out_path), atoms, format="vasp", vasp5=True, direct=True)
 
-                print(f"        -> axis={axis_name(ax)}, strain={strain:+.2f}, scale={scale_str}, file={out_name}")
+                print(f"        -> axis={axis_name(ax)}({axis_label(ax)}), strain={strain:+.2f}, scale={scale_str}, file={out_name}")
                 total_written += 1
 
     print("\n[DONE]")
@@ -218,3 +228,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
+    

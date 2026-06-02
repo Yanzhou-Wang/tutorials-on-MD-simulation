@@ -1,46 +1,153 @@
 #!/bin/bash
 
-:<<!
-(base) [wangyanzhou@c2ln5 ~/proj_Cu-Ta-Li-Ni-vasp-jobs]$ cd 260202-1_vasp-scf_uniaxial_alloy-simple_fr260202-1u1
-(base) [wangyanzhou@c2ln5 ~/proj_Cu-Ta-Li-Ni-vasp-jobs/260202-1_vasp-scf_uniaxial_alloy-simple_fr260202-1u1]$ ls
-id-mp-10173_Li       id-mp-1185266-LiNi3  id-mp-1246134_Ni  id-mp-862658-LiCu3
-id-mp-10257_Ni       id-mp-1185312-LiCu3  id-mp-135_Li      id-mp-891-TaNi3
-id-mp-1059259_Cu     id-mp-1185338-LiCu3  id-mp-23_Ni       id-mp-974058-LiCu3
-id-mp-1063005_Li     id-mp-1217756_Ta     id-mp-2647044_Ta  id-mp-975882-Li3Cu
-id-mp-1184054-CuNi3  id-mp-1225687-CuNi   id-mp-30_Cu       id-mp-989782_Cu
-id-mp-1184069-CuNi   id-mp-1225694-CuNi3  id-mp-50_Ta       launch1-vasp-job_simple.sh
-id-mp-1185204-Li3Ni  id-mp-1225695-CuNi   id-mp-51_Li       launch2-vasp-job_alloy.sh
-id-mp-1185214-Li3Ni  id-mp-1225698-Cu3Ni  id-mp-6986_Ta     screen-out-scf-not-converged-job_fr-outcar.sh
-(base) [wangyanzhou@c2ln5 ~/proj_Cu-Ta-Li-Ni-vasp-jobs/260202-1_vasp-scf_uniaxial_alloy-simple_fr260202-1u1]$ ls id-mp-10173_Li
-orth_a_0.95  orth_a_1.01  orth_a_1.07  orth_b_0.97  orth_b_1.03  orth_b_1.09  orth_c_0.99  orth_c_1.05
-orth_a_0.96  orth_a_1.02  orth_a_1.08  orth_b_0.98  orth_b_1.04  orth_b_1.10  orth_c_1.00  orth_c_1.06
-orth_a_0.97  orth_a_1.03  orth_a_1.09  orth_b_0.99  orth_b_1.05  orth_c_0.95  orth_c_1.01  orth_c_1.07
-orth_a_0.98  orth_a_1.04  orth_a_1.10  orth_b_1.00  orth_b_1.06  orth_c_0.96  orth_c_1.02  orth_c_1.08
-orth_a_0.99  orth_a_1.05  orth_b_0.95  orth_b_1.01  orth_b_1.07  orth_c_0.97  orth_c_1.03  orth_c_1.09
-orth_a_1.00  orth_a_1.06  orth_b_0.96  orth_b_1.02  orth_b_1.08  orth_c_0.98  orth_c_1.04  orth_c_1.10
-!
-
 cwd=`pwd`
 r_dir="$cwd/../260229-1_*"
 
-for i in `ls -d $r_dir/id-* |awk -F"/" '{print $NF}'`
+parse_job_dirs()
+{
+    # This function parses job directories under $r_dir/job_*.
+    #
+    # Supported naming rules:
+    #   job_xxx_m
+    #   job_xxx_m_n
+    #
+    # Returned global arrays:
+    #   is : unique xxx list
+    #   js : unique m list
+    #   ks : unique n list, only meaningful when job_style=4
+    #
+    # Returned global variable:
+    #   job_style = 3 or 4
+
+    local job_paths=()
+    local jp
+    local bn
+    local nf
+    local p1 p2 p3 p4
+    local style_ref=""
+
+    is=()
+    js=()
+    ks=()
+    job_style=""
+
+    shopt -s nullglob
+    job_paths=($r_dir/job_*)
+    shopt -u nullglob
+
+    if [ ${#job_paths[@]} -eq 0 ]; then
+        echo "[ERROR] No job directories found under: $r_dir/job_*"
+        exit 1
+    fi
+
+    for jp in "${job_paths[@]}"
+    do
+        [ -d "$jp" ] || continue
+
+        bn=$(basename "$jp")
+
+        IFS="_" read -r p1 p2 p3 p4 extra <<< "$bn"
+
+        # Count fields separated by "_"
+        nf=$(awk -F"_" '{print NF}' <<< "$bn")
+
+        if [ "$p1" != "job" ]; then
+            echo "[ERROR] Invalid job directory name: $bn"
+            echo "        Expected: job_xxx_m or job_xxx_m_n"
+            exit 1
+        fi
+
+        if [ "$nf" -ne 3 ] && [ "$nf" -ne 4 ]; then
+            echo "[ERROR] Invalid job directory name: $bn"
+            echo "        Expected: job_xxx_m or job_xxx_m_n"
+            echo "        The job name should contain 3 or 4 fields separated by '_'."
+            exit 1
+        fi
+
+        if [ -z "$p2" ] || [ -z "$p3" ]; then
+            echo "[ERROR] Invalid job directory name: $bn"
+            echo "        Empty field is not allowed."
+            exit 1
+        fi
+
+        if [ "$nf" -eq 4 ] && [ -z "$p4" ]; then
+            echo "[ERROR] Invalid job directory name: $bn"
+            echo "        Empty fourth field is not allowed."
+            exit 1
+        fi
+
+        # m and n should be numbers, integer or decimal.
+        if ! [[ "$p3" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+            echo "[ERROR] Invalid job directory name: $bn"
+            echo "        The third field should be a non-negative number."
+            exit 1
+        fi
+
+        if [ "$nf" -eq 4 ]; then
+            if ! [[ "$p4" =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+                echo "[ERROR] Invalid job directory name: $bn"
+                echo "        The fourth field should be a non-negative number."
+                exit 1
+            fi
+        fi
+
+        # Do not allow mixed job_xxx_m and job_xxx_m_n styles.
+        if [ -z "$style_ref" ]; then
+            style_ref="$nf"
+        else
+            if [ "$nf" -ne "$style_ref" ]; then
+                echo "[ERROR] The job directory names to be parsed do not follow one consistent naming rule."
+                echo "        Mixed job_xxx_m and job_xxx_m_n styles were found."
+                echo "        Problematic job directory: $bn"
+                exit 1
+            fi
+        fi
+    done
+
+    job_style="$style_ref"
+
+    if [ "$job_style" -eq 3 ]; then
+        is=($(ls -d $r_dir/job_* | xargs -n 1 basename | awk -F"_" '{print $2}' | sort -u))
+        js=($(ls -d $r_dir/job_* | xargs -n 1 basename | awk -F"_" '{print $3}' | sort -n -u))
+        ks=()
+    elif [ "$job_style" -eq 4 ]; then
+        is=($(ls -d $r_dir/job_* | xargs -n 1 basename | awk -F"_" '{print $2}' | sort -u))
+        js=($(ls -d $r_dir/job_* | xargs -n 1 basename | awk -F"_" '{print $3}' | sort -n -u))
+        ks=($(ls -d $r_dir/job_* | xargs -n 1 basename | awk -F"_" '{print $4}' | sort -n -u))
+    else
+        echo "[ERROR] Unknown job_style: $job_style"
+        exit 1
+    fi
+
+    echo "[INFO] job_style = $job_style"
+    echo "[INFO] is = ${is[*]}"
+    echo "[INFO] js = ${js[*]}"
+    if [ "$job_style" -eq 4 ]; then
+        echo "[INFO] ks = ${ks[*]}"
+    fi
+}
+
+parse_job_dirs
+
+
+for i in ${!is[*]}
 do
-	wd="$i";
+    wd="job_${is[i]}";
 	rm -rf $wd
 	mkdir $wd
-	for j in `ls -d $r_dir/$i/orth* |awk -F"/" '{print $NF}' |awk -F"_" '{print $2}' |sort -u |xargs`
+	for j in ${!js[*]}
 	do
 		
-		wf="result-energy-vs-strain_${j}_DFT.txt"
-		for k in `ls -d $r_dir/$i/orth_${j}_* |awk -F"/" '{print $NF}' |awk -F"_" '{print $3}' |sort -n |xargs`
+		wf="result-energy-vs-strain_${js[j]}_DFT.txt"
+		for k in ${!ks[*]}
 		do
-			strain=$k
-			jn="orth_${j}_${k}"
-			n_sys=$(grep "number of ions" $r_dir/$i/$jn/OUTCAR |awk '{print $12}' | tail -n 1)
-			e_p=$(grep "free  energy   TOTEN" $r_dir/$i/$jn/OUTCAR | tail -1 | awk '{printf "%.6f\n", $5 / '$n_sys'}') 
+			strain=${ks[k]}
+			jn="job_${is[i]}_${js[j]}_${ks[k]}"
+			n_sys=$(grep "number of ions" $r_dir/$jn/OUTCAR |awk '{print $12}' | tail -n 1)
+			e_p=$(grep "free  energy   TOTEN" $r_dir/$jn/OUTCAR | tail -1 | awk '{printf "%.6f\n", $5 / '$n_sys'}') 
 			echo "$strain	$e_p" | tee -a $wd/$wf
 		done
 		sed -i '1i#Strain	Energy(eV/atom)' $wd/$wf
-		echo ">>>>>>>>>>>>>>>> $i | $j .... <<<<<<<<<<<<<<<<<<<<<"
+		echo ">>>>>>>>>>>>>>>> ${is[i]} | ${js[j]}.... <<<<<<<<<<<<<<<<<<<<<"
 	done
 done
