@@ -1,2 +1,2 @@
 # id  a(Angstrom)  b(Angstrom)  c(Angstrom)  alpha(deg)  beta(deg)  gamma(deg)
-id-mp-604313_Li           4.443647      4.443647      4.443647     90.000000     90.000000     90.000000
+job_Li-mp-604313_0        4.443647      4.443647      4.443647     90.000000     90.000000     90.000000

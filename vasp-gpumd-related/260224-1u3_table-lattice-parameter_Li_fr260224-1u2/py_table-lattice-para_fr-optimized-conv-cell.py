@@ -8,7 +8,7 @@ main_path = "../260224-1u2_identify-prim-conv-orth_Li_fr260224-1"
 
 # 用户需要处理的算例目录（这个要用于与main_path的拼接）
 job_items = [
-    "id-mp-604313_Li",
+    "job_Li-mp-604313_0",
 ]
 
 # 用户指定输入结构文件名（一定要是晶胞！！！）

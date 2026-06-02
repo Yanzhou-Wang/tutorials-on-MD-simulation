@@ -19,7 +19,7 @@ w_f2="result-tabled-elastic.txt"
 rm -rf $w_f1 $w_f2
 
 job_items=(
-id-mp-604313_Li
+job_Li-mp-604313_0
 )
 
 for i in ${job_items[*]}

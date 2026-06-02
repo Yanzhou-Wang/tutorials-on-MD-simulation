@@ -15,7 +15,7 @@ mlw = 2.5
 
 # 遍历以 id- 开头的结构目录
 for id_dir in os.listdir(r_dir):
-    if id_dir.startswith("id-"):
+    if id_dir.startswith("job_"):
         # 构造DFT和NEP文件路径
         r_f_DFT = os.path.join(r_dir, id_dir, "result-energy-vs-strain_DFT.txt")
         r_f_NEP = os.path.join(r_dir, id_dir, "result-energy-vs-strain_NEP.txt")
@@ -41,9 +41,11 @@ for id_dir in os.listdir(r_dir):
                      markersize=ms, markerfacecolor='none', linewidth=lw, markeredgewidth=mlw)
 
             # 设置标题和坐标轴标签
-            plt.title(f'{id_dir}', fontsize=fs)
+            title_str = id_dir.removeprefix("job_")
+            plt.title(title_str, fontsize=fs)
+            #plt.title(f'{id_dir}', fontsize=fs)
 
-            plt.xlabel(r'Volume ($\AA^3$/atom)', fontsize=fs)
+            plt.xlabel(r'Volume ($\mathrm{\AA}^3$/atom)', fontsize=fs)
             plt.ylabel('Energy (eV/atom)', fontsize=fs)
 
             # 设置坐标轴刻度的字体大小
