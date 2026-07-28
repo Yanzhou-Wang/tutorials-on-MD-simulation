@@ -9,6 +9,7 @@ potential  ${nep_dest}
 ensemble 	nve
 time_step 	0
 dump_thermo	1
+dump_exyz   1
 run 		1
 !
 ```
