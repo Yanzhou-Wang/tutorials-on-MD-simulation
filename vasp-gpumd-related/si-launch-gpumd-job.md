@@ -13,7 +13,7 @@ dump_exyz   1
 run  1
 !
 ```
-> GPUMD允许time_step=0这一极端情况。该情况下，意味着run=1后，粒子位置依然没有变，所以dump_thermo, dump_exyz等输出就是model.xyz对应的结果
+> `GPUMD`允许`time_step=0`这一极端情况。该情况的`run=1`后，粒子位置依然没有变。所以`dump_thermo`, `dump_exyz`等输出就是`model.xyz`的结果
 
 
 
