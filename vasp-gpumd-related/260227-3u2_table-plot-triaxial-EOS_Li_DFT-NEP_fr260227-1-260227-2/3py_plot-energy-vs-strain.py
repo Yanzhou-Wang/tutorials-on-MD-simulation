@@ -34,10 +34,10 @@ for id_dir in os.listdir(r_dir):
             plt.figure(figsize=(8, 6), dpi=200)
 
             # x 使用 volume
-            plt.plot(volume_DFT, energy_DFT, label='DFT', marker='o', linestyle='-', color='b',
+            plt.plot(volume_DFT, energy_DFT, label='DFT', marker='o', linestyle='-', color='#1f77b4',
                      markersize=ms, markerfacecolor='none', linewidth=lw, markeredgewidth=mlw)
 
-            plt.plot(volume_NEP, energy_NEP, label='NEP', marker='+', linestyle='--', color='r',
+            plt.plot(volume_NEP, energy_NEP, label='NEP', marker='+', linestyle='--', color='#ff7f0e',
                      markersize=ms, markerfacecolor='none', linewidth=lw, markeredgewidth=mlw)
 
             # 设置标题和坐标轴标签
