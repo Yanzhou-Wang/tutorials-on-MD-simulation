@@ -23,7 +23,7 @@ do
 		cp ${pot_dir}/* .
 		dos2unix -q POSCAR 
 		sed -n '6p' POSCAR |xargs cat  > POTCAR       # Caveat: one's POTCAR files in ${pot_dir} MUST BE NAMED BY ELEMENT SYMBOLS, like Cu, Li, Ni, Ta etc.
-		rm -f Cu  Li  Ni  Ta                          # Note: sync correspondingly
+		rm -f `sed -n '6p' POSCAR |xargs`                # Note: sync correspondingly
 
 		#KPOINTS
 		#ksp=0.2
